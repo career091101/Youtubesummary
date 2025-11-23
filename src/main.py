@@ -1,5 +1,6 @@
 import os
 import sys
+import time
 from datetime import datetime
 from dotenv import load_dotenv
 from youtube_client import YouTubeClient
@@ -89,12 +90,25 @@ def main():
         email_sender.send_email(EMAIL_RECIPIENT, subject, body_text, body_html)
         return
 
-    print(f"Found {len(videos)} new videos. Processing...")
+    print(f"Found {len(videos)} new videos.")
+    
+    # YouTube IP制限を回避するため、処理する動画数を制限
+    MAX_VIDEOS = 10
+    if len(videos) > MAX_VIDEOS:
+        print(f"Limiting to {MAX_VIDEOS} videos to avoid IP blocking")
+        videos = videos[:MAX_VIDEOS]
+    
+    print(f"Processing {len(videos)} videos...")
     
     email_body_text = "直近の更新動画要約です。\n\n"
 
-    for video in videos:
-        print(f"Processing video: {video['title']} ({video['url']})")
+    for idx, video in enumerate(videos, 1):
+        print(f"[{idx}/{len(videos)}] Processing: {video['title']} ({video['url']})")
+        
+        # YouTube IP制限を回避するため、各リクエストの間に遅延を追加
+        if idx > 1:  # 最初の動画以降
+            print(f"  Waiting 2 seconds to avoid IP blocking...")
+            time.sleep(2)
         
         transcript = youtube_client.get_transcript(video['video_id'])
         

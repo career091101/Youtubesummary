@@ -10,20 +10,25 @@ class YouTubeClient:
     def _parse_duration(self, duration_iso):
         """
         Parses ISO 8601 duration (e.g., PT1H2M10S) to a readable string (e.g., 1:02:10).
+        Returns a tuple: (formatted_string, total_seconds)
         """
         import re
         match = re.match(r'PT(\d+H)?(\d+M)?(\d+S)?', duration_iso)
         if not match:
-            return "00:00"
+            return "00:00", 0
         
         hours = int(match.group(1)[:-1]) if match.group(1) else 0
         minutes = int(match.group(2)[:-1]) if match.group(2) else 0
         seconds = int(match.group(3)[:-1]) if match.group(3) else 0
         
+        total_seconds = hours * 3600 + minutes * 60 + seconds
+        
         if hours > 0:
-            return f"{hours}:{minutes:02}:{seconds:02}"
+            formatted = f"{hours}:{minutes:02}:{seconds:02}"
         else:
-            return f"{minutes}:{seconds:02}"
+            formatted = f"{minutes}:{seconds:02}"
+        
+        return formatted, total_seconds
 
     def get_videos_from_channels(self, channel_ids):
         """
@@ -71,7 +76,13 @@ class YouTubeClient:
                             continue
                             
                         details = video_details['items'][0]
-                        duration = self._parse_duration(details['contentDetails']['duration'])
+                        duration, duration_seconds = self._parse_duration(details['contentDetails']['duration'])
+                        
+                        # ショート動画（60秒以下）を除外
+                        if duration_seconds <= 60:
+                            print(f"Skipping short video (duration: {duration}): {snippet['title']}")
+                            continue
+                        
                         view_count = details['statistics'].get('viewCount', '0')
                         thumbnail = snippet['thumbnails'].get('high', snippet['thumbnails']['default'])['url']
 
@@ -96,27 +107,17 @@ class YouTubeClient:
         Attempts to get Japanese or English transcript.
         """
         try:
-            # v1.2.3 uses instance method fetch() instead of list_transcripts
+            # Initialize the API client
             ytt_api = YouTubeTranscriptApi()
             
-            # Try Japanese first
-            try:
-                transcript_data = ytt_api.fetch(video_id, languages=['ja'])
-            except Exception:
-                # Fallback to English
-                try:
-                    transcript_data = ytt_api.fetch(video_id, languages=['en'])
-                except Exception:
-                    # Last resort: try without language specification
-                    transcript_data = ytt_api.fetch(video_id)
+            # fetch() method accepts a languages parameter as a priority list
+            # It will try languages in order: Japanese first, then English
+            fetched_transcript = ytt_api.fetch(video_id, languages=['ja', 'en'])
             
-            # Convert to raw data and combine text
-            if hasattr(transcript_data, 'to_raw_data'):
-                raw_data = transcript_data.to_raw_data()
-            else:
-                # If it's already a list
-                raw_data = transcript_data
+            # Convert FetchedTranscript object to raw data (list of dicts)
+            raw_data = fetched_transcript.to_raw_data()
             
+            # Combine all text entries into a single string
             full_text = " ".join([entry['text'] for entry in raw_data])
             return full_text
 
