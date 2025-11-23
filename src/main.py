@@ -18,22 +18,24 @@ def create_html_body(videos):
     """
     
     for video in videos:
+        # Extract summary with newlines replaced (f-strings can't contain backslashes)
+        summary_html = video['summary'].replace('\n', '\u003cbr\u003e')
         html += f"""
-        <div style="border: 1px solid #ddd; padding: 15px; margin-bottom: 20px; border-radius: 5px;">
-            <h3 style="margin-top: 0;"><a href="{video['url']}" style="text-decoration: none; color: #1a0dab;">{video['title']}</a></h3>
-            <div style="display: flex; gap: 15px; margin-bottom: 10px;">
-                <img src="{video['thumbnail']}" alt="Thumbnail" style="width: 200px; height: auto; border-radius: 4px;">
-                <div style="font-size: 0.9em; color: #666;">
-                    <p style="margin: 2px 0;">📺 チャンネル: {video['channel_title']}</p>
-                    <p style="margin: 2px 0;">⏱️ 長さ: {video['duration']}</p>
-                    <p style="margin: 2px 0;">👀 再生回数: {video['view_count']:,}回</p>
-                    <p style="margin: 2px 0;">📅 投稿: {datetime.fromisoformat(video['published_at'].replace('Z', '+00:00')).strftime('%Y/%m/%d %H:%M')}</p>
-                </div>
-            </div>
-            <div style="background-color: #f9f9f9; padding: 10px; border-radius: 4px;">
-                {video['summary'].replace('\n', '<br>')}
-            </div>
-        </div>
+        \u003cdiv style="border: 1px solid #ddd; padding: 15px; margin-bottom: 20px; border-radius: 5px;"\u003e
+            \u003ch3 style="margin-top: 0;"\u003e\u003ca href="{video['url']}" style="text-decoration: none; color: #1a0dab;"\u003e{video['title']}\u003c/a\u003e\u003c/h3\u003e
+            \u003cdiv style="display: flex; gap: 15px; margin-bottom: 10px;"\u003e
+                \u003cimg src="{video['thumbnail']}" alt="Thumbnail" style="width: 200px; height: auto; border-radius: 4px;"\u003e
+                \u003cdiv style="font-size: 0.9em; color: #666;"\u003e
+                    \u003cp style="margin: 2px 0;"\u003e📺 チャンネル: {video['channel_title']}\u003c/p\u003e
+                    \u003cp style="margin: 2px 0;"\u003e⏱️ 長さ: {video['duration']}\u003c/p\u003e
+                    \u003cp style="margin: 2px 0;"\u003e👀 再生回数: {video['view_count']:,}回\u003c/p\u003e
+                    \u003cp style="margin: 2px 0;"\u003e📅 投稿: {datetime.fromisoformat(video['published_at'].replace('Z', '+00:00')).strftime('%Y/%m/%d %H:%M')}\u003c/p\u003e
+                \u003c/div\u003e
+            \u003c/div\u003e
+            \u003cdiv style="background-color: #f9f9f9; padding: 10px; border-radius: 4px;"\u003e
+                {summary_html}
+            \u003c/div\u003e
+        \u003c/div\u003e
         """
     
     html += """
