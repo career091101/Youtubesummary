@@ -92,33 +92,32 @@ class YouTubeClient:
 
     def get_transcript(self, video_id):
         """
-        Fetches the transcript for a given video ID.
-        Prioritizes Japanese, then English, then auto-generated.
+        Fetches the transcript for a given video ID using youtube-transcript-api v1.2.3.
+        Attempts to get Japanese or English transcript.
         """
         try:
-            transcript_list = YouTubeTranscriptApi.list_transcripts(video_id)
+            # v1.2.3 uses instance method fetch() instead of list_transcripts
+            ytt_api = YouTubeTranscriptApi()
             
-            # Try to get Japanese or English transcript
+            # Try Japanese first
             try:
-                transcript = transcript_list.find_transcript(['ja', 'en'])
-            except NoTranscriptFound:
-                # Fallback to any available transcript (including auto-generated)
+                transcript_data = ytt_api.fetch(video_id, languages=['ja'])
+            except Exception:
+                # Fallback to English
                 try:
-                    transcript = transcript_list.find_generated_transcript(['ja', 'en'])
-                except NoTranscriptFound:
-                     # Final fallback: just take the first one available and translate if needed? 
-                     # For now, let's just try to get *any* and translate to Japanese if possible, 
-                     # or just return it.
-                     # Actually, list_transcripts returns an iterable.
-                     for t in transcript_list:
-                         transcript = t
-                         break
+                    transcript_data = ytt_api.fetch(video_id, languages=['en'])
+                except Exception:
+                    # Last resort: try without language specification
+                    transcript_data = ytt_api.fetch(video_id)
             
-            # Fetch the actual transcript data
-            transcript_data = transcript.fetch()
+            # Convert to raw data and combine text
+            if hasattr(transcript_data, 'to_raw_data'):
+                raw_data = transcript_data.to_raw_data()
+            else:
+                # If it's already a list
+                raw_data = transcript_data
             
-            # Combine text
-            full_text = " ".join([entry['text'] for entry in transcript_data])
+            full_text = " ".join([entry['text'] for entry in raw_data])
             return full_text
 
         except (TranscriptsDisabled, NoTranscriptFound):
