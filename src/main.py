@@ -93,7 +93,7 @@ def main():
     print(f"Found {len(videos)} new videos.")
     
     # YouTube IP制限を回避するため、処理する動画数を制限
-    MAX_VIDEOS = 10
+    MAX_VIDEOS = 50
     if len(videos) > MAX_VIDEOS:
         print(f"Limiting to {MAX_VIDEOS} videos to avoid IP blocking")
         videos = videos[:MAX_VIDEOS]

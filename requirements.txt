@@ -1,4 +1,5 @@
 google-api-python-client
-youtube-transcript-api
+youtube-transcript-api==1.2.3
 openai
 python-dotenv
+# antigravity-mcp==0.3.1 # Uncomment if available in your environment
