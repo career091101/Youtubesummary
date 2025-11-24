@@ -144,55 +144,87 @@ class YouTubeClient:
         if self.cache:
             cached_transcript = self.cache.get(video_id)
             if cached_transcript:
+                logger.info(f"Using cached transcript for video {video_id}")
                 return cached_transcript
         
         # Try to fetch transcript with exponential backoff
         for attempt in range(self.max_retries):
             try:
-                # Initialize the API client
+                # Prepare cookies if available
                 cookies = None
                 if self.cookies_file and os.path.exists(self.cookies_file):
                     cookies = self.cookies_file
-
-                # Create API instance
-                api = YouTubeTranscriptApi()
+                    logger.debug(f"Using cookies from {self.cookies_file}")
                 
-                # Try to get transcript in Japanese or English
+                # Try to get transcript list first to check available languages
                 try:
-                    fetched_transcript = api.fetch(video_id, ['ja', 'en'])
-                except:
-                    # If specific language fails, try with default (English)
-                    fetched_transcript = api.fetch(video_id)
-
+                    transcript_list = YouTubeTranscriptApi.list_transcripts(video_id, cookies=cookies)
+                    
+                    # Try to find Japanese transcript first, then English
+                    transcript = None
+                    try:
+                        transcript = transcript_list.find_transcript(['ja'])
+                        logger.debug(f"Found Japanese transcript for video {video_id}")
+                    except:
+                        try:
+                            transcript = transcript_list.find_transcript(['en'])
+                            logger.debug(f"Found English transcript for video {video_id}")
+                        except:
+                            # Get any available transcript
+                            transcript = transcript_list.find_generated_transcript(['ja', 'en'])
+                            logger.debug(f"Using generated transcript for video {video_id}")
+                    
+                    # Fetch the transcript data
+                    fetched_transcript = transcript.fetch()
+                    
+                except Exception as e:
+                    # If list_transcripts fails, try direct fetch
+                    logger.debug(f"list_transcripts failed, trying direct fetch: {e}")
+                    fetched_transcript = YouTubeTranscriptApi.get_transcript(
+                        video_id, 
+                        languages=['ja', 'en'],
+                        cookies=cookies
+                    )
                 
                 # Combine all text entries into a single string
-                full_text = " ".join([entry.text for entry in fetched_transcript])
+                full_text = " ".join([entry['text'] for entry in fetched_transcript])
                 
                 # Cache the result
                 if self.cache:
                     self.cache.set(video_id, full_text)
                 
-                logger.info(f"Successfully fetched transcript for video {video_id}")
+                logger.info(f"Successfully fetched transcript for video {video_id} ({len(full_text)} chars)")
                 return full_text
-
                 
             except (TranscriptsDisabled, NoTranscriptFound) as e:
-                logger.warning(f"No transcript found for video {video_id}: {e}")
+                logger.warning(f"No transcript available for video {video_id}: {e}")
                 return None
                 
             except Exception as e:
+                error_msg = str(e)
+                
+                # Check if it's an IP blocking error
+                if "blocking" in error_msg.lower() or "cloud provider" in error_msg.lower():
+                    logger.error(
+                        f"YouTube is blocking requests from this IP address for video {video_id}. "
+                        f"This is a known issue when running from cloud providers like GitHub Actions. "
+                        f"Error: {error_msg}"
+                    )
+                    return None
+                
                 # Handle other errors with exponential backoff
                 if attempt < self.max_retries - 1:
                     wait_time = self.backoff_factor ** attempt
                     logger.warning(
                         f"Error fetching transcript for video {video_id}. "
                         f"Attempt {attempt + 1}/{self.max_retries}. "
-                        f"Waiting {wait_time} seconds before retry... Error: {e}"
+                        f"Waiting {wait_time} seconds before retry... Error: {error_msg}"
                     )
                     time.sleep(wait_time)
                 else:
-                    logger.error(f"Failed to fetch transcript for video {video_id} after {self.max_retries} attempts: {e}")
+                    logger.error(f"Failed to fetch transcript for video {video_id} after {self.max_retries} attempts: {error_msg}")
                     return None
         
         return None
+
 

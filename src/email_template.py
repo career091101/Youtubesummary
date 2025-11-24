@@ -76,8 +76,8 @@ def create_youtube_style_html_body(videos):
             <!-- Header -->
             <div class="header" style="{style_header}">
                 <div class="logo-container" style="{style_logo_container}">
-                    <!-- SVG YouTube Icon -->
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg" alt="YouTube" width="30" height="21" style="display: block; width: 30px; height: 21px;">
+                    <!-- YouTube Icon (Base64 embedded) -->
+                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyODggMjg4Ij48cGF0aCBmaWxsPSIjRkYwMDAwIiBkPSJNMjI5Ljc2MyA0Ni4wNzNjLTIuNjk0LTEwLjEyNC0xMC42NTYtMTguMDg2LTIwLjc4LTIwLjc4QzE5MC42NzMgMjEgMTQ0IDIxIDk2IDIxcy05NC42NzMgMC0xMTIuOTgzIDQuMjkzYy0xMC4xMjQgMi42OTQtMTguMDg2IDEwLjY1Ni0yMC43OCAyMC43OEMyMSA2NC4zODQgMjEgMTQ0IDIxIDE0NHMwIDc5LjYxNiA0LjIzNyA5Ny45MjdjMi42OTQgMTAuMTI0IDEwLjY1NiAxOC4wODYgMjAuNzggMjAuNzhDNjQuMzI3IDI2NyAxMTEgMjY3IDE1OSAyNjdzOTQuNjczIDAgMTEyLjk4My00LjI5M2MxMC4xMjQtMi42OTQgMTguMDg2LTEwLjY1NiAyMC43OC0yMC43OEMyOTcgMjIzLjYxNiAyOTcgMTQ0IDI5NyAxNDRzMC03OS42MTYtNC4yMzctOTcuOTI3eiIvPjxwYXRoIGZpbGw9IiNGRkYiIGQ9Ik0xMTcgMTg4LjVWOTkuNWw3NS41IDQ0LjUtNzUuNSA0NC41eiIvPjwvc3ZnPg==" alt="YouTube" width="30" height="21" style="display: block; width: 30px; height: 21px;">
                     <span class="logo-text" style="{style_logo_text}">YouTube Summary</span>
                 </div>
                 <div class="date-badge" style="{style_date_badge}">{datetime.now().strftime('%b %d')}</div>
