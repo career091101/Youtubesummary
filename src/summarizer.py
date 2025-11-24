@@ -1,14 +1,18 @@
 from openai import OpenAI
+from .logger import setup_logger
+
+logger = setup_logger(__name__)
 
 class Summarizer:
-    def __init__(self, api_key):
+    def __init__(self, api_key: str):
         self.client = OpenAI(api_key=api_key)
 
-    def summarize(self, text):
+    def summarize(self, text: str) -> str:
         """
         Summarizes the given text into approximately 600 Japanese characters.
         """
         if not text:
+            logger.warning("No text provided for summarization.")
             return "要約するテキストがありませんでした。"
 
         # Truncate text if it's extremely long to avoid token limits (though unlikely with modern models for single videos)
@@ -37,5 +41,6 @@ class Summarizer:
             )
             return response.choices[0].message.content.strip()
         except Exception as e:
-            print(f"Error during summarization: {e}")
+            logger.error(f"Error during summarization: {e}")
             return "要約の生成中にエラーが発生しました。"
+

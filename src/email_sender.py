@@ -1,14 +1,17 @@
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-from datetime import datetime
+from typing import Optional
+from .logger import setup_logger
+
+logger = setup_logger(__name__)
 
 class EmailSender:
-    def __init__(self, gmail_user, gmail_password):
+    def __init__(self, gmail_user: str, gmail_password: str):
         self.gmail_user = gmail_user
         self.gmail_password = gmail_password
 
-    def send_email(self, recipient, subject, body_text, body_html=None):
+    def send_email(self, recipient: str, subject: str, body_text: str, body_html: Optional[str] = None):
         """
         Sends an email using Gmail SMTP. Supports both plain text and HTML.
         """
@@ -29,6 +32,7 @@ class EmailSender:
             server.login(self.gmail_user, self.gmail_password)
             server.send_message(msg)
             server.quit()
-            print(f"Email sent successfully to {recipient}")
+            logger.info(f"Email sent successfully to {recipient}")
         except Exception as e:
-            print(f"Failed to send email: {e}")
+            logger.error(f"Failed to send email: {e}")
+
