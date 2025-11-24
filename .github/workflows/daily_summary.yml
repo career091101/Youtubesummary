@@ -32,4 +32,4 @@ jobs:
         GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
         TARGET_CHANNEL_IDS: ${{ secrets.TARGET_CHANNEL_IDS }}
         EMAIL_RECIPIENT: ${{ secrets.EMAIL_RECIPIENT }}
-      run: python src/main.py
+      run: python -m src.main
