@@ -164,7 +164,17 @@ class YouTubeClient:
                 
                 # Try to get transcript list
                 # Note: We use list_transcripts directly as it provides more control over language selection
-                transcript_list = YouTubeTranscriptApi.list_transcripts(video_id, cookies=cookies)
+                logger.info(f"DEBUG: Calling list_transcripts for {video_id}")
+                logger.info(f"DEBUG: YouTubeTranscriptApi id: {id(YouTubeTranscriptApi)}")
+                logger.info(f"DEBUG: YouTubeTranscriptApi type: {type(YouTubeTranscriptApi)}")
+                logger.info(f"DEBUG: YouTubeTranscriptApi dir: {dir(YouTubeTranscriptApi)}")
+                try:
+                    transcript_list = YouTubeTranscriptApi.list_transcripts(video_id, cookies=cookies)
+                except AttributeError as ae:
+                    logger.error(f"DEBUG: AttributeError caught! {ae}")
+                    logger.error(f"DEBUG: YouTubeTranscriptApi content: {YouTubeTranscriptApi.__dict__}")
+                    raise ae
+
                 
                 # Try to find Japanese transcript first, then English
                 transcript = None
