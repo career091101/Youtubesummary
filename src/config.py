@@ -30,6 +30,9 @@ class Config:
     BACKOFF_FACTOR = 2  # exponential backoff multiplier for retries
     CACHE_DIR = os.path.join(BASE_DIR, '.cache')
     CACHE_EXPIRY_DAYS = 7  # transcript cache expiry in days
+    PROCESSED_VIDEOS_FILE = os.path.join(BASE_DIR, 'processed_videos.txt')
+
+
     
     @classmethod
     def get_channel_ids(cls):

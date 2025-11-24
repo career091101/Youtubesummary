@@ -20,27 +20,44 @@ class Summarizer:
         
         try:
             response = self.client.chat.completions.create(
-                model="gpt-4o-mini", # Cost-effective and capable
+                model="gpt-5.1", # Updated to GPT-5.1
                 messages=[
                     {"role": "system", "content": """あなたは優秀な要約アシスタントです。
-提供されたYouTube動画の字幕テキストを元に、以下の構成で日本語のレポートを作成してください。
+提供されたYouTube動画の字幕テキストを元に、日本語の要約を作成してください。
 
 【要約】
-動画の要点を600文字程度のパラグラフ形式（箇条書き不可）でまとめてください。
-
-【考察】
-動画の内容から読み取れる深い洞察や、視聴者が気づきにくい視点を提供してください。
-
-【アクションプラン】
-視聴者が明日から実践できる具体的な行動指針を3つ提案してください。
+動画の要点を1000文字程度のパラグラフ形式（箇条書き不可）でまとめてください。
 """},
                     {"role": "user", "content": text}
                 ],
-                max_tokens=1000, # Increased for additional sections
+                max_completion_tokens=2000, # Use max_completion_tokens for GPT-5.1
                 temperature=0.7
             )
             return response.choices[0].message.content.strip()
         except Exception as e:
             logger.error(f"Error during summarization: {e}")
             return "要約の生成中にエラーが発生しました。"
+
+    def is_gen_ai_video(self, title: str, description: str) -> bool:
+        """
+        Determines if a video is related to Generative AI using GPT-5.1.
+        """
+        try:
+            content = f"Title: {title}\nDescription: {description[:500]}" # Limit description length
+            response = self.client.chat.completions.create(
+                model="gpt-5.1", # Updated to GPT-5.1
+                messages=[
+                    {"role": "system", "content": "You are a classifier. Determine if the following video is related to Generative AI (LLM, Image Generation, AI Agents, etc.). Respond with 'YES' or 'NO'."},
+                    {"role": "user", "content": content}
+                ],
+                max_completion_tokens=50, # Increased to avoid token limit error
+                temperature=0.0
+            )
+            result = response.choices[0].message.content.strip().upper()
+            return "YES" in result
+        except Exception as e:
+            logger.error(f"Error during classification: {e}")
+            # Default to False on error to avoid spam, or True to be safe? 
+            # Let's default to False to be strict as per user request "only Gen AI".
+            return False
 

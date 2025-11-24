@@ -10,37 +10,44 @@ def create_youtube_style_html_body(videos):
     # CSS styles defined inline for email compatibility
     # Palette: White (#FFFFFF), Red (#FF0000), Black (#0F0F0F), Gray (#606060)
     
-    # Base styles (Desktop defaults, overridden by media queries in <head>)
-    style_body = "font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; line-height: 1.6; color: #333333; background-color: #f4f4f4; margin: 0; padding: 20px;"
-    style_container = "max-width: 600px; margin: 0 auto; background-color: #FFFFFF; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.05);"
+    # Base styles
+    style_body = "font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif; background-color: #f9f9f9; margin: 0; padding: 20px; color: #0f0f0f;"
+    style_container = "max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.05);"
     
     # Header
-    style_header = "background: #ffffff; padding: 20px 24px; border-bottom: 1px solid #eeeeee; display: flex; align-items: center;"
-    style_logo_text = "font-size: 20px; font-weight: 700; color: #0F0F0F; display: flex; align-items: center; letter-spacing: -0.5px;"
-    style_logo_icon = "color: #FF0000; margin-right: 8px; font-size: 24px;"
+    style_header = "padding: 16px 24px; border-bottom: 1px solid #f0f0f0; display: flex; align-items: center; justify-content: space-between; background-color: #ffffff;"
+    style_logo_container = "display: flex; align-items: center; gap: 4px;"
+    style_logo_text = "font-family: 'Roboto', sans-serif; font-size: 22px; font-weight: 700; letter-spacing: -0.5px; color: #0f0f0f; position: relative; top: -1px;"
+    style_date_badge = "background-color: #f2f2f2; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 500; color: #606060;"
     
     style_content_wrapper = "padding: 24px;"
-    style_intro = "margin-bottom: 24px; color: #555555; font-size: 15px; text-align: center;"
     
     # Card
-    style_card = "margin-bottom: 32px; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.08); border: 1px solid #f0f0f0;"
+    style_card = "margin-bottom: 40px; border-bottom: 1px solid #f0f0f0; padding-bottom: 32px;"
     
     # Thumbnail
-    style_thumbnail_wrapper = "position: relative; width: 100%; overflow: hidden; padding-top: 56.25%;" # 16:9 Aspect Ratio
-    style_thumbnail = "position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; display: block;"
+    style_thumbnail_container = "position: relative; width: 100%; border-radius: 12px; overflow: hidden; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);"
+    style_thumbnail_img = "width: 100%; display: block; aspect-ratio: 16/9; object-fit: cover;"
+    style_duration_badge = "position: absolute; bottom: 8px; right: 8px; background-color: rgba(0, 0, 0, 0.8); color: #ffffff; padding: 3px 6px; border-radius: 4px; font-size: 12px; font-weight: 500; letter-spacing: 0.5px;"
     
-    style_card_content = "padding: 20px;"
-    style_video_title = "margin: 0 0 12px 0; font-size: 18px; font-weight: 700; line-height: 1.4; color: #0F0F0F;"
-    style_link = "text-decoration: none; color: #0F0F0F;"
+    # Video Info
+    style_video_info = "padding: 0 4px;"
+    style_video_title = "font-size: 18px; font-weight: 600; line-height: 1.4; color: #0f0f0f; margin-bottom: 8px; text-decoration: none; display: block;"
     
-    style_meta = "font-size: 12px; color: #666666; margin-bottom: 16px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center;"
-    style_meta_item = "display: flex; align-items: center; gap: 4px;"
+    style_channel_info = "display: flex; align-items: center; margin-bottom: 16px;"
+    style_channel_avatar = "width: 24px; height: 24px; border-radius: 50%; background-color: #e5e5e5; color: #606060; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; margin-right: 8px;"
+    style_meta_text = "font-size: 12px; color: #606060;"
     
-    style_summary_box = "background-color: #f8f9fa; padding: 16px; border-radius: 8px; font-size: 14px; color: #444444; line-height: 1.7; border-left: 3px solid #FF0000;"
+    # Summary Box
+    style_summary_box = "background-color: #f2f2f2; padding: 16px; border-radius: 12px; margin-bottom: 16px; position: relative;"
+    style_summary_header = "display: flex; align-items: center; margin-bottom: 8px; font-size: 12px; font-weight: 700; color: #0f0f0f;"
+    style_ai_icon = "margin-right: 6px; font-size: 14px;"
+    style_summary_text = "font-size: 14px; line-height: 1.6; color: #0f0f0f;"
     
-    style_footer = "text-align: center; font-size: 12px; color: #999999; padding: 24px; background-color: #f4f4f4;"
+    # Action Button
+    style_action_button = "display: inline-block; background-color: #f2f2f2; color: #0f0f0f; padding: 10px 20px; border-radius: 20px; text-decoration: none; font-size: 14px; font-weight: 500;"
     
-    style_divider = "height: 1px; background-color: #eeeeee; margin: 24px 0;"
+    style_footer = "text-align: center; padding: 32px; background-color: #f9f9f9; color: #909090; font-size: 12px;"
 
     html = f"""
     <!DOCTYPE html>
@@ -58,31 +65,25 @@ def create_youtube_style_html_body(videos):
             
             /* Mobile Responsive Styles */
             @media only screen and (max-width: 600px) {{
-                .body-wrapper {{ padding: 0 !important; background-color: #ffffff !important; }}
-                .container {{ width: 100% !important; max-width: 100% !important; border-radius: 0 !important; box-shadow: none !important; }}
+                .container {{ border-radius: 0 !important; }}
                 .content-wrapper {{ padding: 16px !important; }}
-                .card {{ margin-bottom: 24px !important; border: none !important; box-shadow: none !important; border-bottom: 1px solid #eeeeee !important; border-radius: 0 !important; }}
                 .video-title {{ font-size: 16px !important; }}
-                .summary-box {{ padding: 12px !important; }}
             }}
         </style>
     </head>
-    <body class="body-wrapper" style="{style_body}">
+    <body style="{style_body}">
         <div class="container" style="{style_container}">
             <!-- Header -->
-            <div style="{style_header}">
-                <div style="{style_logo_text}">
-                    <span style="{style_logo_icon}">▶</span> YouTube Summary
+            <div class="header" style="{style_header}">
+                <div class="logo-container" style="{style_logo_container}">
+                    <!-- SVG YouTube Icon -->
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg" alt="YouTube" width="30" height="21" style="display: block; width: 30px; height: 21px;">
+                    <span class="logo-text" style="{style_logo_text}">YouTube Summary</span>
                 </div>
+                <div class="date-badge" style="{style_date_badge}">{datetime.now().strftime('%b %d')}</div>
             </div>
 
             <div class="content-wrapper" style="{style_content_wrapper}">
-                <!-- Intro -->
-                <p style="{style_intro}">
-                    Daily AI Updates • <strong>{datetime.now().strftime('%b %d, %Y')}</strong>
-                </p>
-                
-                <div style="{style_divider}"></div>
     """
     
     for idx, video in enumerate(videos, 1):
@@ -95,38 +96,50 @@ def create_youtube_style_html_body(videos):
         # Format view count
         view_count = video['view_count']
         if view_count >= 1000000:
-            view_str = f"{view_count/1000000:.1f}M"
+            view_str = f"{view_count/1000000:.1f}M views"
         elif view_count >= 1000:
-            view_str = f"{view_count/1000:.1f}K"
+            view_str = f"{view_count/1000:.1f}K views"
         else:
-            view_str = str(view_count)
+            view_str = f"{view_count} views"
+            
+        # Channel Initial for Avatar
+        channel_initial = video['channel_title'][0].upper() if video['channel_title'] else "?"
+        
+        # Last card should not have bottom border/margin
+        current_style_card = style_card
+        if idx == len(videos):
+            current_style_card = "margin-bottom: 0; border-bottom: none; padding-bottom: 0;"
         
         html += f"""
                 <!-- Video Card {idx} -->
-                <div class="card" style="{style_card}">
-                    <div style="{style_thumbnail_wrapper}">
-                        <a href="{video['url']}" style="text-decoration: none; display: block;">
-                            <img src="{video['thumbnail']}" alt="{video['title']}" style="{style_thumbnail}">
+                <div class="card" style="{current_style_card}">
+                    <div class="thumbnail-container" style="{style_thumbnail_container}">
+                        <a href="{video['url']}" style="display: block;">
+                            <img src="{video['thumbnail']}" alt="{video['title']}" class="thumbnail-img" style="{style_thumbnail_img}">
+                            <div class="duration-badge" style="{style_duration_badge}">{video['duration']}</div>
                         </a>
                     </div>
-                    <div style="{style_card_content}">
-                        <h3 class="video-title" style="{style_video_title}">
-                            <a href="{video['url']}" style="{style_link}">{video['title']}</a>
-                        </h3>
+                    
+                    <div class="video-info" style="{style_video_info}">
+                        <a href="{video['url']}" class="video-title" style="{style_video_title}">{video['title']}</a>
                         
-                        <div style="{style_meta}">
-                            <span style="{style_meta_item}">📺 {video['channel_title']}</span>
-                            <span style="{style_meta_item}">👁️ {view_str}</span>
-                            <span style="{style_meta_item}">⏱️ {video['duration']}</span>
-                            <span style="{style_meta_item}">📅 {published_at}</span>
+                        <div class="channel-info" style="{style_channel_info}">
+                            <div class="channel-avatar" style="{style_channel_avatar}">{channel_initial}</div>
+                            <div class="meta-text" style="{style_meta_text}">
+                                {video['channel_title']} • {view_str} • {published_at}
+                            </div>
                         </div>
-                        
+
                         <div class="summary-box" style="{style_summary_box}">
-                            <div style="font-weight: 700; color: #FF0000; font-size: 12px; margin-bottom: 8px; letter-spacing: 0.5px;">AI SUMMARY</div>
-                            <div style="color: #444444;">
+                            <div class="summary-header" style="{style_summary_header}">
+                                <span class="ai-icon" style="{style_ai_icon}">✨</span> AI Summary
+                            </div>
+                            <div class="summary-text" style="{style_summary_text}">
                                 {video['summary'].replace(chr(10), '<br>')}
                             </div>
                         </div>
+
+                        <a href="{video['url']}" class="action-button" style="{style_action_button}">Watch on YouTube</a>
                     </div>
                 </div>
         """
@@ -134,8 +147,8 @@ def create_youtube_style_html_body(videos):
     html += f"""
             </div>
             <!-- Footer -->
-            <div style="{style_footer}">
-                <p>&copy; {datetime.now().year} YouTube Summary Agent</p>
+            <div class="footer" style="{style_footer}">
+                &copy; {datetime.now().year} YouTube Summary Agent
             </div>
         </div>
     </body>

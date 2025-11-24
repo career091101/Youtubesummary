@@ -1,0 +1,109 @@
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="x-apple-disable-message-reformatting">
+        <title>YouTube Summary</title>
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+            
+            /* Reset */
+            body, p, h1, h2, h3 { margin: 0; padding: 0; }
+            
+            /* Mobile Responsive Styles */
+            @media only screen and (max-width: 600px) {
+                .container { border-radius: 0 !important; }
+                .content-wrapper { padding: 16px !important; }
+                .video-title { font-size: 16px !important; }
+            }
+        </style>
+    </head>
+    <body style="font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif; background-color: #f9f9f9; margin: 0; padding: 20px; color: #0f0f0f;">
+        <div class="container" style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
+            <!-- Header -->
+            <div class="header" style="padding: 16px 24px; border-bottom: 1px solid #f0f0f0; display: flex; align-items: center; justify-content: space-between; background-color: #ffffff;">
+                <div class="logo-container" style="display: flex; align-items: center; gap: 4px;">
+                    <!-- SVG YouTube Icon -->
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg" alt="YouTube" width="30" height="21" style="display: block; width: 30px; height: 21px;">
+                    <span class="logo-text" style="font-family: 'Roboto', sans-serif; font-size: 22px; font-weight: 700; letter-spacing: -0.5px; color: #0f0f0f; position: relative; top: -1px;">YouTube Summary</span>
+                </div>
+                <div class="date-badge" style="background-color: #f2f2f2; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 500; color: #606060;">Nov 24</div>
+            </div>
+
+            <div class="content-wrapper" style="padding: 24px;">
+    
+                <!-- Video Card 1 -->
+                <div class="card" style="margin-bottom: 40px; border-bottom: 1px solid #f0f0f0; padding-bottom: 32px;">
+                    <div class="thumbnail-container" style="position: relative; width: 100%; border-radius: 12px; overflow: hidden; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                        <a href="https://youtube.com/watch?v=example1" style="display: block;">
+                            <img src="https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg" alt="The Future of AI: What to Expect in 2025" class="thumbnail-img" style="width: 100%; display: block; aspect-ratio: 16/9; object-fit: cover;">
+                            <div class="duration-badge" style="position: absolute; bottom: 8px; right: 8px; background-color: rgba(0, 0, 0, 0.8); color: #ffffff; padding: 3px 6px; border-radius: 4px; font-size: 12px; font-weight: 500; letter-spacing: 0.5px;">15:30</div>
+                        </a>
+                    </div>
+                    
+                    <div class="video-info" style="padding: 0 4px;">
+                        <a href="https://youtube.com/watch?v=example1" class="video-title" style="font-size: 18px; font-weight: 600; line-height: 1.4; color: #0f0f0f; margin-bottom: 8px; text-decoration: none; display: block;">The Future of AI: What to Expect in 2025</a>
+                        
+                        <div class="channel-info" style="display: flex; align-items: center; margin-bottom: 16px;">
+                            <div class="channel-avatar" style="width: 24px; height: 24px; border-radius: 50%; background-color: #e5e5e5; color: #606060; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; margin-right: 8px;">T</div>
+                            <div class="meta-text" style="font-size: 12px; color: #606060;">
+                                Tech Visionary • 125.0K views • 2023.11.23
+                            </div>
+                        </div>
+
+                        <div class="summary-box" style="background-color: #f2f2f2; padding: 16px; border-radius: 12px; margin-bottom: 16px; position: relative;">
+                            <div class="summary-header" style="display: flex; align-items: center; margin-bottom: 8px; font-size: 12px; font-weight: 700; color: #0f0f0f;">
+                                <span class="ai-icon" style="margin-right: 6px; font-size: 14px;">✨</span> AI Summary
+                            </div>
+                            <div class="summary-text" style="font-size: 14px; line-height: 1.6; color: #0f0f0f;">
+                                This video explores the upcoming trends in Artificial Intelligence.<br><br>Key insights include:<br>- Generative AI advancements<br>- Ethical considerations<br>- Impact on job markets<br><br>Action Plan:<br>1. Stay updated with latest research.<br>2. Experiment with new tools.
+                            </div>
+                        </div>
+
+                        <a href="https://youtube.com/watch?v=example1" class="action-button" style="display: inline-block; background-color: #f2f2f2; color: #0f0f0f; padding: 10px 20px; border-radius: 20px; text-decoration: none; font-size: 14px; font-weight: 500;">Watch on YouTube</a>
+                    </div>
+                </div>
+        
+                <!-- Video Card 2 -->
+                <div class="card" style="margin-bottom: 0; border-bottom: none; padding-bottom: 0;">
+                    <div class="thumbnail-container" style="position: relative; width: 100%; border-radius: 12px; overflow: hidden; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                        <a href="https://youtube.com/watch?v=example2" style="display: block;">
+                            <img src="https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg" alt="Python 4.0: Rumors vs Reality" class="thumbnail-img" style="width: 100%; display: block; aspect-ratio: 16/9; object-fit: cover;">
+                            <div class="duration-badge" style="position: absolute; bottom: 8px; right: 8px; background-color: rgba(0, 0, 0, 0.8); color: #ffffff; padding: 3px 6px; border-radius: 4px; font-size: 12px; font-weight: 500; letter-spacing: 0.5px;">08:45</div>
+                        </a>
+                    </div>
+                    
+                    <div class="video-info" style="padding: 0 4px;">
+                        <a href="https://youtube.com/watch?v=example2" class="video-title" style="font-size: 18px; font-weight: 600; line-height: 1.4; color: #0f0f0f; margin-bottom: 8px; text-decoration: none; display: block;">Python 4.0: Rumors vs Reality</a>
+                        
+                        <div class="channel-info" style="display: flex; align-items: center; margin-bottom: 16px;">
+                            <div class="channel-avatar" style="width: 24px; height: 24px; border-radius: 50%; background-color: #e5e5e5; color: #606060; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; margin-right: 8px;">C</div>
+                            <div class="meta-text" style="font-size: 12px; color: #606060;">
+                                Coding Daily • 54.0K views • 2023.11.23
+                            </div>
+                        </div>
+
+                        <div class="summary-box" style="background-color: #f2f2f2; padding: 16px; border-radius: 12px; margin-bottom: 16px; position: relative;">
+                            <div class="summary-header" style="display: flex; align-items: center; margin-bottom: 8px; font-size: 12px; font-weight: 700; color: #0f0f0f;">
+                                <span class="ai-icon" style="margin-right: 6px; font-size: 14px;">✨</span> AI Summary
+                            </div>
+                            <div class="summary-text" style="font-size: 14px; line-height: 1.6; color: #0f0f0f;">
+                                A deep dive into the speculation surrounding Python 4.0.<br><br>The video clarifies that there are no immediate plans for a breaking change version like Python 3 was.
+                            </div>
+                        </div>
+
+                        <a href="https://youtube.com/watch?v=example2" class="action-button" style="display: inline-block; background-color: #f2f2f2; color: #0f0f0f; padding: 10px 20px; border-radius: 20px; text-decoration: none; font-size: 14px; font-weight: 500;">Watch on YouTube</a>
+                    </div>
+                </div>
+        
+            </div>
+            <!-- Footer -->
+            <div class="footer" style="text-align: center; padding: 32px; background-color: #f9f9f9; color: #909090; font-size: 12px;">
+                &copy; 2025 YouTube Summary Agent
+            </div>
+        </div>
+    </body>
+    </html>
+    

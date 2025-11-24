@@ -1,4 +1,5 @@
 import sys
+import os
 import time
 from datetime import datetime
 from typing import List, Dict, Any
@@ -27,6 +28,20 @@ def fetch_videos(youtube_client: YouTubeClient, channel_ids: List[str]) -> List[
         videos = videos[:Config.MAX_VIDEOS]
         
     return videos
+
+def load_processed_videos() -> set:
+    if os.path.exists(Config.PROCESSED_VIDEOS_FILE):
+        with open(Config.PROCESSED_VIDEOS_FILE, 'r', encoding='utf-8') as f:
+            return set(line.strip() for line in f if line.strip())
+    return set()
+
+def save_processed_videos(video_ids: List[str]):
+    with open(Config.PROCESSED_VIDEOS_FILE, 'a', encoding='utf-8') as f:
+        for vid in video_ids:
+            f.write(f"{vid}\n")
+
+def is_gen_ai_content(video: Dict[str, Any], summarizer: Summarizer) -> bool:
+    return summarizer.is_gen_ai_video(video['title'], video.get('description', ''))
 
 def process_videos(videos: List[Dict[str, Any]], youtube_client: YouTubeClient, summarizer: Summarizer) -> str:
     logger.info(f"Processing {len(videos)} videos...")
@@ -99,18 +114,47 @@ def main():
     # Get Channel IDs
     channel_ids = Config.get_channel_ids()
 
+    # Load processed video IDs
+    processed_ids = load_processed_videos()
+    logger.info(f"Loaded {len(processed_ids)} processed video IDs.")
+
     # Fetch Videos
     videos = fetch_videos(youtube_client, channel_ids)
 
-    if not videos:
+    # Filter out processed videos
+    new_videos = [v for v in videos if v['video_id'] not in processed_ids]
+    logger.info(f"Filtered out {len(videos) - len(new_videos)} already processed videos.")
+    
+    # Filter for Generative AI content
+    gen_ai_videos = []
+    for v in new_videos:
+        if is_gen_ai_content(v, summarizer):
+            gen_ai_videos.append(v)
+            logger.info(f"  [KEEP] {v['title']}")
+        else:
+            logger.info(f"  [SKIP] {v['title']}")
+
+    logger.info(f"Filtered out {len(new_videos) - len(gen_ai_videos)} non-Generative AI videos.")
+
+    if not gen_ai_videos:
+        # Only send notification if we actually filtered out videos that were otherwise new
+        # If no videos were found at all, fetch_videos returns [], so we are here too.
+        # But if we found videos but they were all non-AI or processed, we might want to skip sending email?
+        # The original requirement said "Notifications: Ensure an email is sent even if no new videos are found."
+        # But user said "前回のメール配信した内容の動画は次回の配信で配信しないように"
+        # Let's keep the "no updates" email for now, but maybe we should clarify if "no updates" means "no NEW AI updates".
+        # For now, if no AI videos, send "no updates".
         send_notification(email_sender, [], "")
         return
 
     # Process Videos (Summarize)
-    email_body_text = process_videos(videos, youtube_client, summarizer)
+    email_body_text = process_videos(gen_ai_videos, youtube_client, summarizer)
 
     # Send Email
-    send_notification(email_sender, videos, email_body_text)
+    send_notification(email_sender, gen_ai_videos, email_body_text)
+    
+    # Save processed video IDs
+    save_processed_videos([v['video_id'] for v in gen_ai_videos])
     logger.info("Done!")
 
 if __name__ == "__main__":

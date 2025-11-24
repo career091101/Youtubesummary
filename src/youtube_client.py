@@ -59,11 +59,11 @@ class YouTubeClient:
 
     def get_videos_from_channels(self, channel_ids: List[str]) -> List[Dict[str, Any]]:
         """
-        Fetches videos uploaded in the last 24 hours from the specified channels.
+        Fetches videos uploaded in the last 3 days from the specified channels.
         """
         videos = []
-        # 24 hours ago in RFC 3339 format
-        published_after = (datetime.now(timezone.utc) - timedelta(days=1)).isoformat()
+        # 3 days ago in RFC 3339 format
+        published_after = (datetime.now(timezone.utc) - timedelta(days=3)).isoformat()
 
         for channel_id in channel_ids:
             try:
@@ -105,8 +105,8 @@ class YouTubeClient:
                         details = video_details['items'][0]
                         duration, duration_seconds = self._parse_duration(details['contentDetails']['duration'])
                         
-                        # ショート動画（60秒以下）を除外
-                        if duration_seconds <= 60:
+                        # 5分以内の動画を除外
+                        if duration_seconds <= 300:
                             logger.info(f"Skipping short video (duration: {duration}): {snippet['title']}")
                             continue
                         
