@@ -156,24 +156,12 @@ class YouTubeClient:
         # Try to fetch transcript with exponential backoff
         for attempt in range(self.max_retries):
             try:
-                # Prepare cookies if available
-                cookies = None
-                if self.cookies_file and os.path.exists(self.cookies_file):
-                    cookies = self.cookies_file
-                    logger.debug(f"Using cookies from {self.cookies_file}")
+                # Try to get transcript list using correct API method
+                logger.info(f"Fetching transcript for video {video_id}")
                 
-                # Try to get transcript list
-                # Note: We use list_transcripts directly as it provides more control over language selection
-                logger.info(f"DEBUG: Calling list_transcripts for {video_id}")
-                logger.info(f"DEBUG: YouTubeTranscriptApi id: {id(YouTubeTranscriptApi)}")
-                logger.info(f"DEBUG: YouTubeTranscriptApi type: {type(YouTubeTranscriptApi)}")
-                logger.info(f"DEBUG: YouTubeTranscriptApi dir: {dir(YouTubeTranscriptApi)}")
-                try:
-                    transcript_list = YouTubeTranscriptApi.list_transcripts(video_id, cookies=cookies)
-                except AttributeError as ae:
-                    logger.error(f"DEBUG: AttributeError caught! {ae}")
-                    logger.error(f"DEBUG: YouTubeTranscriptApi content: {YouTubeTranscriptApi.__dict__}")
-                    raise ae
+                # Create API instance and get list of available transcripts
+                api = YouTubeTranscriptApi()
+                transcript_list = api.list(video_id)
 
                 
                 # Try to find Japanese transcript first, then English
