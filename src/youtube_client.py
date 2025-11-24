@@ -156,35 +156,26 @@ class YouTubeClient:
                     cookies = self.cookies_file
                     logger.debug(f"Using cookies from {self.cookies_file}")
                 
-                # Try to get transcript list first to check available languages
+                # Try to get transcript list
+                # Note: We use list_transcripts directly as it provides more control over language selection
+                transcript_list = YouTubeTranscriptApi.list_transcripts(video_id, cookies=cookies)
+                
+                # Try to find Japanese transcript first, then English
+                transcript = None
                 try:
-                    transcript_list = YouTubeTranscriptApi.list_transcripts(video_id, cookies=cookies)
-                    
-                    # Try to find Japanese transcript first, then English
-                    transcript = None
+                    transcript = transcript_list.find_transcript(['ja'])
+                    logger.debug(f"Found Japanese transcript for video {video_id}")
+                except:
                     try:
-                        transcript = transcript_list.find_transcript(['ja'])
-                        logger.debug(f"Found Japanese transcript for video {video_id}")
+                        transcript = transcript_list.find_transcript(['en'])
+                        logger.debug(f"Found English transcript for video {video_id}")
                     except:
-                        try:
-                            transcript = transcript_list.find_transcript(['en'])
-                            logger.debug(f"Found English transcript for video {video_id}")
-                        except:
-                            # Get any available transcript
-                            transcript = transcript_list.find_generated_transcript(['ja', 'en'])
-                            logger.debug(f"Using generated transcript for video {video_id}")
-                    
-                    # Fetch the transcript data
-                    fetched_transcript = transcript.fetch()
-                    
-                except Exception as e:
-                    # If list_transcripts fails, try direct fetch
-                    logger.debug(f"list_transcripts failed, trying direct fetch: {e}")
-                    fetched_transcript = YouTubeTranscriptApi.get_transcript(
-                        video_id, 
-                        languages=['ja', 'en'],
-                        cookies=cookies
-                    )
+                        # Get any available transcript
+                        transcript = transcript_list.find_generated_transcript(['ja', 'en'])
+                        logger.debug(f"Using generated transcript for video {video_id}")
+                
+                # Fetch the transcript data
+                fetched_transcript = transcript.fetch()
                 
                 # Combine all text entries into a single string
                 full_text = " ".join([entry['text'] for entry in fetched_transcript])
