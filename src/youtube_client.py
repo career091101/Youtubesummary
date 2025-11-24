@@ -9,6 +9,12 @@ from .transcript_cache import TranscriptCache
 
 logger = setup_logger(__name__)
 
+# Debug logging for youtube_transcript_api
+import youtube_transcript_api
+logger.info(f"Loaded youtube_transcript_api from: {youtube_transcript_api.__file__}")
+logger.info(f"YouTubeTranscriptApi attributes: {dir(YouTubeTranscriptApi)}")
+
+
 class YouTubeClient:
     def __init__(self, api_key: str, cookies_file: Optional[str] = None, 
                  cache_dir: Optional[str] = None, cache_expiry_days: int = 7,
