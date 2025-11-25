@@ -23,9 +23,7 @@ def fetch_videos(youtube_client: YouTubeClient, channel_ids: List[str]) -> List[
         
     logger.info(f"Found {len(videos)} new videos.")
     
-    if len(videos) > Config.MAX_VIDEOS:
-        logger.info(f"Limiting to {Config.MAX_VIDEOS} videos to avoid IP blocking")
-        videos = videos[:Config.MAX_VIDEOS]
+    # Limit removed from here to allow filtering first
         
     return videos
 
@@ -106,7 +104,8 @@ def main():
         cache_expiry_days=Config.CACHE_EXPIRY_DAYS,
         max_retries=Config.MAX_RETRIES,
         backoff_factor=Config.BACKOFF_FACTOR,
-        proxies=proxies if proxies else None
+        proxies=proxies if proxies else None,
+        user_agent=Config.USER_AGENT
     )
     summarizer = Summarizer(Config.OPENAI_API_KEY)
     email_sender = EmailSender(Config.GMAIL_USER, Config.GMAIL_APP_PASSWORD)
@@ -121,9 +120,12 @@ def main():
     # Fetch Videos
     videos = fetch_videos(youtube_client, channel_ids)
 
-    # Filter out processed videos
     new_videos = [v for v in videos if v['video_id'] not in processed_ids]
     logger.info(f"Filtered out {len(videos) - len(new_videos)} already processed videos.")
+
+    if len(new_videos) > Config.MAX_VIDEOS:
+        logger.info(f"Limiting to {Config.MAX_VIDEOS} new videos to avoid IP blocking")
+        new_videos = new_videos[:Config.MAX_VIDEOS]
     
     # Filter for Generative AI content
     gen_ai_videos = []

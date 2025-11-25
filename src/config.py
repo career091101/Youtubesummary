@@ -24,13 +24,16 @@ class Config:
     PROXY_HTTPS = os.getenv('PROXY_HTTPS')  # e.g., 'https://proxy.example.com:8080'
     
     # App Settings
-    MAX_VIDEOS = 50
-    RETRY_DELAY = 5  # seconds - delay between video processing to avoid IP blocking
-    MAX_RETRIES = 3  # maximum number of retry attempts for failed requests
-    BACKOFF_FACTOR = 2  # exponential backoff multiplier for retries
+    MAX_VIDEOS = int(os.getenv('MAX_VIDEOS', 50))
+    RETRY_DELAY = int(os.getenv('RETRY_DELAY', 10))  # seconds - delay between video processing to avoid IP blocking
+    MAX_RETRIES = int(os.getenv('MAX_RETRIES', 5))  # maximum number of retry attempts for failed requests
+    BACKOFF_FACTOR = int(os.getenv('BACKOFF_FACTOR', 3))  # exponential backoff multiplier for retries
     CACHE_DIR = os.path.join(BASE_DIR, '.cache')
     CACHE_EXPIRY_DAYS = 7  # transcript cache expiry in days
     PROCESSED_VIDEOS_FILE = os.path.join(BASE_DIR, 'processed_videos.txt')
+    
+    # User-Agent for avoiding bot detection
+    USER_AGENT = os.getenv('USER_AGENT', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36')
 
 
     

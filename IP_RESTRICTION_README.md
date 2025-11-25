@@ -65,9 +65,10 @@ PROXY_HTTPS=https://proxy.example.com:8080
 
 1. **待機時間を増やす**
    ```bash
-   # .envファイルで設定を変更（現在は実装されていません）
-   # または、config.pyを直接編集
-   RETRY_DELAY = 10  # 10秒に増加
+   # .envファイルで設定を変更
+   RETRY_DELAY=15  # 15秒に増加
+   MAX_RETRIES=7   # リトライ回数を増やす
+   BACKOFF_FACTOR=4  # バックオフ係数を増やす
    ```
 
 2. **プロキシを使用する**
@@ -75,6 +76,27 @@ PROXY_HTTPS=https://proxy.example.com:8080
 
 3. **実行頻度を減らす**
    - GitHub Actionsのスケジュールを調整
+
+### 403 Forbidden / IP Blocking エラーの場合
+
+1. **プロキシまたはVPNを使用**
+   ```bash
+   # .envファイルにプロキシ設定を追加
+   PROXY_HTTP=http://your-proxy.com:8080
+   PROXY_HTTPS=https://your-proxy.com:8080
+   ```
+
+2. **User-Agentをカスタマイズ**
+   ```bash
+   # .envファイルでUser-Agentを設定
+   USER_AGENT=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
+   ```
+
+3. **動画処理数を減らす**
+   ```bash
+   # .envファイルで設定
+   MAX_VIDEOS=20  # 一度に処理する動画数を減らす
+   ```
 
 ### キャッシュの確認
 

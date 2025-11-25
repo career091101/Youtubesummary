@@ -16,8 +16,7 @@ def create_youtube_style_html_body(videos):
     
     # Header
     style_header = "padding: 16px 24px; border-bottom: 1px solid #f0f0f0; display: flex; align-items: center; justify-content: space-between; background-color: #ffffff;"
-    style_logo_container = "display: flex; align-items: center; gap: 4px;"
-    style_logo_text = "font-family: 'Roboto', sans-serif; font-size: 22px; font-weight: 700; letter-spacing: -0.5px; color: #0f0f0f; position: relative; top: -1px;"
+    style_logo_text = "font-family: 'Roboto', sans-serif; font-size: 22px; font-weight: 700; letter-spacing: -0.5px; color: #0f0f0f;"
     style_date_badge = "background-color: #f2f2f2; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 500; color: #606060;"
     
     style_content_wrapper = "padding: 24px;"
@@ -32,11 +31,9 @@ def create_youtube_style_html_body(videos):
     
     # Video Info
     style_video_info = "padding: 0 4px;"
-    style_video_title = "font-size: 18px; font-weight: 600; line-height: 1.4; color: #0f0f0f; margin-bottom: 8px; text-decoration: none; display: block;"
+    style_video_title = "font-size: 18px; font-weight: 600; line-height: 1.4; color: #0f0f0f; margin-bottom: 12px; text-decoration: none; display: block;"
     
-    style_channel_info = "display: flex; align-items: center; margin-bottom: 16px;"
-    style_channel_avatar = "width: 24px; height: 24px; border-radius: 50%; background-color: #e5e5e5; color: #606060; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; margin-right: 8px;"
-    style_meta_text = "font-size: 12px; color: #606060;"
+    style_meta_text = "font-size: 12px; color: #606060; margin-bottom: 16px;"
     
     # Summary Box
     style_summary_box = "background-color: #f2f2f2; padding: 16px; border-radius: 12px; margin-bottom: 16px; position: relative;"
@@ -62,12 +59,48 @@ def create_youtube_style_html_body(videos):
             
             /* Reset */
             body, p, h1, h2, h3 {{ margin: 0; padding: 0; }}
+            img {{ max-width: 100%; height: auto; }}
             
             /* Mobile Responsive Styles */
             @media only screen and (max-width: 600px) {{
-                .container {{ border-radius: 0 !important; }}
-                .content-wrapper {{ padding: 16px !important; }}
-                .video-title {{ font-size: 16px !important; }}
+                body {{ padding: 0 !important; }}
+                .container {{ 
+                    border-radius: 0 !important; 
+                    box-shadow: none !important;
+                }}
+                .header {{ 
+                    padding: 12px 16px !important; 
+                }}
+                .logo-text {{ 
+                    font-size: 18px !important; 
+                }}
+                .date-badge {{ 
+                    font-size: 11px !important; 
+                    padding: 4px 8px !important; 
+                }}
+                .content-wrapper {{ 
+                    padding: 16px !important; 
+                }}
+                .card {{ 
+                    margin-bottom: 24px !important; 
+                    padding-bottom: 24px !important; 
+                }}
+                .video-title {{ 
+                    font-size: 16px !important; 
+                }}
+                .meta-text {{ 
+                    font-size: 11px !important; 
+                }}
+                .summary-box {{ 
+                    padding: 12px !important; 
+                }}
+                .summary-text {{ 
+                    font-size: 13px !important; 
+                }}
+                .action-button {{ 
+                    font-size: 13px !important; 
+                    padding: 8px 16px !important; 
+                }}
             }}
         </style>
     </head>
@@ -75,11 +108,7 @@ def create_youtube_style_html_body(videos):
         <div class="container" style="{style_container}">
             <!-- Header -->
             <div class="header" style="{style_header}">
-                <div class="logo-container" style="{style_logo_container}">
-                    <!-- YouTube Icon (Base64 embedded) -->
-                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyODggMjg4Ij48cGF0aCBmaWxsPSIjRkYwMDAwIiBkPSJNMjI5Ljc2MyA0Ni4wNzNjLTIuNjk0LTEwLjEyNC0xMC42NTYtMTguMDg2LTIwLjc4LTIwLjc4QzE5MC42NzMgMjEgMTQ0IDIxIDk2IDIxcy05NC42NzMgMC0xMTIuOTgzIDQuMjkzYy0xMC4xMjQgMi42OTQtMTguMDg2IDEwLjY1Ni0yMC43OCAyMC43OEMyMSA2NC4zODQgMjEgMTQ0IDIxIDE0NHMwIDc5LjYxNiA0LjIzNyA5Ny45MjdjMi42OTQgMTAuMTI0IDEwLjY1NiAxOC4wODYgMjAuNzggMjAuNzhDNjQuMzI3IDI2NyAxMTEgMjY3IDE1OSAyNjdzOTQuNjczIDAgMTEyLjk4My00LjI5M2MxMC4xMjQtMi42OTQgMTguMDg2LTEwLjY1NiAyMC43OC0yMC43OEMyOTcgMjIzLjYxNiAyOTcgMTQ0IDI5NyAxNDRzMC03OS42MTYtNC4yMzctOTcuOTI3eiIvPjxwYXRoIGZpbGw9IiNGRkYiIGQ9Ik0xMTcgMTg4LjVWOTkuNWw3NS41IDQ0LjUtNzUuNSA0NC41eiIvPjwvc3ZnPg==" alt="YouTube" width="30" height="21" style="display: block; width: 30px; height: 21px;">
-                    <span class="logo-text" style="{style_logo_text}">YouTube Summary</span>
-                </div>
+                <span class="logo-text" style="{style_logo_text}">YouTube Summary</span>
                 <div class="date-badge" style="{style_date_badge}">{datetime.now().strftime('%b %d')}</div>
             </div>
 
@@ -101,9 +130,6 @@ def create_youtube_style_html_body(videos):
             view_str = f"{view_count/1000:.1f}K views"
         else:
             view_str = f"{view_count} views"
-            
-        # Channel Initial for Avatar
-        channel_initial = video['channel_title'][0].upper() if video['channel_title'] else "?"
         
         # Last card should not have bottom border/margin
         current_style_card = style_card
@@ -123,11 +149,8 @@ def create_youtube_style_html_body(videos):
                     <div class="video-info" style="{style_video_info}">
                         <a href="{video['url']}" class="video-title" style="{style_video_title}">{video['title']}</a>
                         
-                        <div class="channel-info" style="{style_channel_info}">
-                            <div class="channel-avatar" style="{style_channel_avatar}">{channel_initial}</div>
-                            <div class="meta-text" style="{style_meta_text}">
-                                {video['channel_title']} • {view_str} • {published_at}
-                            </div>
+                        <div class="meta-text" style="{style_meta_text}">
+                            {video['channel_title']} • {view_str} • {published_at}
                         </div>
 
                         <div class="summary-box" style="{style_summary_box}">

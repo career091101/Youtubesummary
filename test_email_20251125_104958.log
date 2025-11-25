@@ -1,0 +1,100 @@
+2025-11-25 10:49:58,557 - src.youtube_client - INFO - Loaded youtube_transcript_api from: /Users/y_sato/anaconda3/lib/python3.11/site-packages/youtube_transcript_api/__init__.py
+2025-11-25 10:49:58,557 - src.youtube_client - INFO - YouTubeTranscriptApi attributes: ['__class__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattribute__', '__getstate__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', 'fetch', 'list']
+2025-11-25 10:49:59,035 - src.transcript_cache - INFO - Loaded transcript cache with 25 entries
+2025-11-25 10:49:59,035 - src.youtube_client - INFO - Transcript cache enabled: /Users/y_sato/Downloads/YOutubeSummary/.cache
+2025-11-25 10:49:59,035 - src.youtube_client - INFO - No proxy configured
+2025-11-25 10:49:59,035 - src.youtube_client - INFO - Custom User-Agent configured: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) Ap...
+2025-11-25 10:49:59,076 - __main__ - INFO - Loaded 35 processed video IDs.
+2025-11-25 10:49:59,076 - __main__ - INFO - Fetching recent videos...
+2025-11-25 10:50:02,458 - src.youtube_client - INFO - Skipping short video (duration: 1:05): ChatGPT開発秘話 #chatgpt #ビジネス #openai #aiツール
+2025-11-25 10:50:02,579 - src.youtube_client - INFO - Skipping short video (duration: 0:51): 【衝撃】イーロン・マスクの報酬150兆円！？使い道が異次元すぎる。 #shorts #イーロンマスク#ビジネス #雑学 #お金 #テスラ
+2025-11-25 10:50:02,678 - src.youtube_client - INFO - Skipping short video (duration: 1:07): 【画像生成No.1】Geminiから新モデル「Nano Banana Pro」公開。サムネイルやバナー作成、LPの作成までGeminiで完結か。 #ai #チャエン#gemini #画像生成ai
+2025-11-25 10:50:06,042 - src.youtube_client - INFO - Skipping short video (duration: 0:32): Open-Source AI, Real Impact
+2025-11-25 10:50:06,168 - src.youtube_client - INFO - Skipping short video (duration: 3:19): How Extreme Hardware–Software Co-Design Is Driving the Future of AI Supercomputing
+2025-11-25 10:50:06,275 - src.youtube_client - INFO - Skipping short video (duration: 2:46): How Open Source is Advancing Specialized AI for Industry Leaders
+2025-11-25 10:50:06,999 - src.youtube_client - INFO - Skipping short video (duration: 0:57): 【OSS開発で大バズり】ClaudeCode関連で一番使われているOSS作者がプログラミングを始めたきっかけ
+2025-11-25 10:50:07,094 - src.youtube_client - INFO - Skipping short video (duration: 1:20): AWSプリセールスエンジニアで得られる貴重な経験
+2025-11-25 10:50:08,872 - src.youtube_client - INFO - Skipping short video (duration: 0:10): Nano Banana Pro、本当に凄すぎる。
+2025-11-25 10:50:09,005 - src.youtube_client - INFO - Skipping short video (duration: 0:18): AIにVERBAL風のラップさせてみた
+2025-11-25 10:50:09,719 - src.youtube_client - INFO - Skipping short video (duration: 0:22): You can now see where an account’s posts on X are coming from (its location)! #twitter #x
+2025-11-25 10:50:13,966 - src.youtube_client - INFO - Skipping short video (duration: 2:30): 面倒な資料作成はAIですぐに終わります。 #gemini #gemini活用 #nanobanana #ai活用 #仕事効率化 #かいちのai大学
+2025-11-25 10:50:14,172 - src.youtube_client - INFO - Skipping short video (duration: 2:40): スライド資料2秒で作れます　 #gemini #gemini活用 #nanobanana #ai活用 #仕事効率化 #かいちのai大学
+2025-11-25 10:50:14,267 - src.youtube_client - INFO - Skipping short video (duration: 0:25): この資料2秒で作れます... #gemini #gemini活用 #nanobanana #ai活用 #仕事効率化 #かいちのai大学
+2025-11-25 10:50:16,248 - src.youtube_client - INFO - Skipping short video (duration: 0:45): Gooogleの復活とOpen AIの正念場。Googleが再評価される理由とは
+2025-11-25 10:50:16,458 - src.youtube_client - INFO - Skipping short video (duration: 0:40): ionQは買収戦略で量子コンピューター技術を用いたエコシステムを構築していく。
+2025-11-25 10:50:18,112 - src.youtube_client - INFO - Skipping short video (duration: 1:00): 話題の無料AI「DeepSeek」は本当に使える？ガチで検証して分かったこと
+2025-11-25 10:50:18,217 - src.youtube_client - INFO - Skipping short video (duration: 1:16): 【イーロンマスク砲】最新トレンドを独占。情報収集の常識を破壊するAI「Grok」
+2025-11-25 10:50:18,400 - src.youtube_client - INFO - Skipping short video (duration: 1:14): 【正直レビュー】日本産AI「Felo」は本当に使える？弱点と賢い使い方を解説
+2025-11-25 10:50:18,740 - src.youtube_client - ERROR - Error fetching videos for channel UCdVAniljIFzVF-gZ9MzMbrA: <HttpError 404 when requesting https://youtube.googleapis.com/youtube/v3/playlistItems?playlistId=UUdVAniljIFzVF-gZ9MzMbrA&part=snippet&maxResults=10&key=AIzaSyCnocIcI2U4MuyJiIDqSrrbVZNoCDaG3OU&alt=json returned "The playlist identified with the request's <code>playlistId</code> parameter cannot be found.". Details: "[{'message': "The playlist identified with the request's <code>playlistId</code> parameter cannot be found.", 'domain': 'youtube.playlistItem', 'reason': 'playlistNotFound', 'location': 'playlistId', 'locationType': 'parameter'}]">
+2025-11-25 10:50:22,709 - src.youtube_client - INFO - Skipping short video (duration: 0:21): Claude Code on desktop
+2025-11-25 10:50:22,830 - src.youtube_client - INFO - Skipping short video (duration: 1:39): Claude works with you on slides, spreadsheets, and contract redlines
+2025-11-25 10:50:22,931 - src.youtube_client - INFO - Skipping short video (duration: 0:50): Introducing Claude Opus 4.5
+2025-11-25 10:50:23,027 - src.youtube_client - INFO - Skipping short video (duration: 1:35): Claude Opus 4.5 solves a puzzle game
+2025-11-25 10:50:24,294 - src.youtube_client - INFO - Skipping short video (duration: 0:32): 【裏技級】本業しながらAIに働かせて稼ぐ、新時代の副業 #shorts #入山章栄 #深津貴之
+2025-11-25 10:50:26,331 - src.youtube_client - INFO - Skipping short video (duration: 0:58): OpenAIのAI安全性の5段階モデル #AI #shorts
+2025-11-25 10:50:26,435 - src.youtube_client - INFO - Skipping short video (duration: 0:59): 核融合と太陽光がエネルギー源の主流になる？ #AI #shorts
+2025-11-25 10:50:26,534 - src.youtube_client - INFO - Skipping short video (duration: 0:55): 「私が本当にやりたいのは新しい科学の発見とその収益化」サム・アルトマン #AI #shorts
+2025-11-25 10:50:28,624 - src.youtube_client - INFO - Skipping short video (duration: 1:14): 【保存版】Webサービスの仕組みと学習順序を完全図解！初心者向けロードマップ  #切り抜き
+2025-11-25 10:50:29,632 - src.youtube_client - INFO - Skipping short video (duration: 0:59): 手鞠｜テマリ｜Temari｜#aiartlab #aistory #naruto #火影忍者 #風影家族
+2025-11-25 10:50:29,734 - src.youtube_client - INFO - Skipping short video (duration: 0:59): つなで｜Tsunade｜綱手大人｜#aiartlab #aistory #naruto #火影忍者 #綱手
+2025-11-25 10:50:29,838 - src.youtube_client - INFO - Skipping short video (duration: 1:00): Hinata Hyuga｜日向 ヒナタ｜日向雛田｜#aiartlab #aistory #naruto #anime #ninja
+2025-11-25 10:50:32,220 - src.youtube_client - INFO - Skipping short video (duration: 0:28): Gemini 3 Pro Creates Endless Minecraft-Style Worlds
+2025-11-25 10:50:32,319 - src.youtube_client - INFO - Skipping short video (duration: 0:18): Gemini 3 Pro Builds Stunning Landing Pages Instantly
+2025-11-25 10:50:32,420 - src.youtube_client - INFO - Skipping short video (duration: 0:23): Gemini 3 pro Builds a Snowy Minecraft-Style Christmas House in 3D
+2025-11-25 10:50:34,463 - src.youtube_client - INFO - Skipping short video (duration: 0:33): 케이팝데몬헌터스 실사화 영화촬영 현장, AI로 만든 가상 캐스팅 #kpopdemonhunters #animation #장원영
+2025-11-25 10:50:36,271 - src.youtube_client - INFO - Skipping short video (duration: 2:16): 【G20帰路✈️】高市総理 機内から報告🇿🇦各国首脳との外交！
+2025-11-25 10:50:36,359 - src.youtube_client - INFO - Skipping short video (duration: 1:17): G20南ア🇿🇦 高市総理 FOIP・WTO改革・Ukraine Peaceを発信 最後🇮🇹メローニ首相とハグ / PM Sanae Takaichi at G20
+2025-11-25 10:50:37,091 - src.youtube_client - INFO - Skipping short video (duration: 0:14): 【恐怖】寄生虫に侵されたクリーチャー ＃恐怖 #ai生成 #horror #shorts  #動画生成ai
+2025-11-25 10:50:37,199 - src.youtube_client - INFO - Skipping short video (duration: 0:14): 【恐怖】頭いっぱい毛虫 ＃恐怖 #ai生成 #horror #shorts  #動画生成ai
+2025-11-25 10:50:37,304 - src.youtube_client - INFO - Skipping short video (duration: 0:14): 【恐怖】顔いくつあるの？ ＃恐怖 #ai生成 #horror #shorts  #動画生成ai
+2025-11-25 10:50:38,258 - src.youtube_client - INFO - Skipping short video (duration: 0:51): 今週の見どころは？2025年11月25日～ #投資 #日経平均 #shorts
+2025-11-25 10:50:39,645 - src.youtube_client - INFO - Skipping short video (duration: 2:03): Recording life itself - biotechnology in 2050
+2025-11-25 10:50:39,749 - src.youtube_client - INFO - Skipping short video (duration: 0:46): Biotechnology in 2050
+2025-11-25 10:50:40,842 - src.youtube_client - INFO - Skipping short video (duration: 1:39): 【2026年始動】総務省がAI信頼性評価システムを開発！7つの基準で生成AIをチェック
+2025-11-25 10:50:40,951 - src.youtube_client - INFO - Skipping short video (duration: 1:39): 【2026年始動】総務省がAI信頼性評価システムを開発！7つの基準で生成AIをチェック
+2025-11-25 10:50:41,065 - src.youtube_client - INFO - Skipping short video (duration: 3:41): 【日本語完全対応】Nano Banana Proで日本語が完璧に生成できるか徹底検証！
+2025-11-25 10:50:41,164 - src.youtube_client - INFO - Skipping short video (duration: 3:00): 【日本語完全対応】Nano Banana Proで日本語が完璧に生成できるか徹底検証！
+2025-11-25 10:50:41,408 - src.youtube_client - INFO - Skipping short video (duration: 3:00): 【11月第3週まとめ】NanobananaPro・Gemini 3登場／Grok4.1首位／Microsoft×NVIDIA×Anthropic提携／Antigravity爆誕…AI大激動の1週間！
+2025-11-25 10:50:41,503 - src.youtube_client - INFO - Skipping short video (duration: 1:51): 【新機能】NotebookLMが画像ソース対応！手書きメモもAI解析可能に
+2025-11-25 10:50:41,593 - src.youtube_client - INFO - Skipping short video (duration: 1:48): 【新機能】NotebookLMが画像ソース対応！手書きメモもAI解析可能に
+2025-11-25 10:50:46,392 - src.youtube_client - INFO - Skipping short video (duration: 0:14): [GHIBLI AI] Spirited Away: Yubaba Demands Chihiro’s Employment Insurance! (12s Trailer) #shorts
+2025-11-25 10:50:47,830 - src.youtube_client - INFO - Skipping short video (duration: 4:31): moto g66 5Gバッテリー性能はどうなの？徹底検証してみた🔥
+2025-11-25 10:50:48,783 - src.youtube_client - INFO - Skipping short video (duration: 2:53): ChatGPTに新しく追加された7つのトーンを検証！#shorts #chatgpt
+2025-11-25 10:50:48,885 - src.youtube_client - INFO - Skipping short video (duration: 0:44): 皮肉っぽいChatGPTがマジでウザい！ #ai #ChatGPT #shorts
+2025-11-25 10:50:48,992 - src.youtube_client - INFO - Skipping short video (duration: 1:36): おすすめのAIブラウザ3選！作業効率化のための必須ツール　#shorts
+2025-11-25 10:50:49,801 - src.youtube_client - INFO - Skipping short video (duration: 0:40): Find a Pain Point Worth Solving
+2025-11-25 10:50:54,322 - src.youtube_client - INFO - Skipping short video (duration: 1:47): 高市総理が帰国 日中接触なし　日中韓会談拒否を正当化　【モーサテ】
+2025-11-25 10:50:54,425 - src.youtube_client - INFO - Skipping short video (duration: 0:29): 糖尿病薬「オゼンピック」　アルツハイマー病に効果示されず【モーサテ】
+2025-11-25 10:50:54,519 - src.youtube_client - INFO - Skipping short video (duration: 0:30): 米アルファベット株が大幅高　「ジェミニ3」を好感【モーサテ】
+2025-11-25 10:50:54,604 - src.youtube_client - INFO - Skipping short video (duration: 0:48): 米FRBウォラー理事　12月FOMCで「利下げ支持」【モーサテ】
+2025-11-25 10:50:54,712 - src.youtube_client - INFO - Skipping short video (duration: 0:45): 米中首脳が電話会談　台湾問題めぐり米けん制【モーサテ】
+2025-11-25 10:50:54,847 - src.youtube_client - INFO - Skipping short video (duration: 0:32): リサイクル工場が火災　24時間経過も鎮圧めどたたず　茨城県・坂東市【WBS】
+2025-11-25 10:50:55,731 - src.youtube_client - INFO - Skipping short video (duration: 0:50): I NEEDED MY ULTIMATE GAMING SETUP TO BE LIT UP FROM THE OUTSIDE TOO! 💡🎮 #gamingvideos #PS5 #gamer
+2025-11-25 10:50:55,952 - src.youtube_client - INFO - Skipping short video (duration: 0:40): GETTING MY BASEMENT READY FOR GAME NIGHT💥🎲 #gamingvideos #arcade #pcgaming #gaming
+2025-11-25 10:50:56,659 - src.youtube_client - INFO - Skipping short video (duration: 00:00): 【生配信】国民民主党・玉木代表定例会見 11月25日（火）【ReHacQ】
+2025-11-25 10:50:57,359 - __main__ - INFO - Found 60 new videos.
+2025-11-25 10:50:57,360 - __main__ - INFO - Filtered out 30 already processed videos.
+2025-11-25 10:50:57,360 - __main__ - INFO - Limiting to 20 new videos to avoid IP blocking
+2025-11-25 10:50:58,698 - __main__ - INFO -   [SKIP] 【アクティビストにいじめられた会社のその後】株主提案数が急増／提案の大型化と高度化／受け入れられるようになった理由／任天堂へのレター／サッポロへの強烈なダメ出し／セブン＆アイの課題／手打ちの典型例
+2025-11-25 10:51:00,037 - __main__ - INFO -   [SKIP] 【12のコンサル名著で学ぶ】会議の質が爆上がりするコンサル虎の巻フレーズ／元BCG高松智史がコンサル思考の真髄を熱弁／全ては問いから始まる「論点思考」／大前研一も提唱する「戦略思考」【ビジネス虎の巻】
+2025-11-25 10:51:01,233 - __main__ - INFO -   [SKIP] 【英語はネイティブから学ぶな】タイミー小川社長も実践する英語コーチング／英語学習の最速ルート／英語は発音からはじめよ
+2025-11-25 10:51:03,094 - __main__ - INFO -   [SKIP] 【給料が上がらないのは、経営者の怠慢だ】利益率への執着が低い／国がベースアップを決める／業界団体の役割を変えよ／ガバナンスはまだ甘い／社外取締役人材の少なさ／日本には経営者教育がない
+2025-11-25 10:51:04,010 - __main__ - INFO -   [SKIP] がんを防ぐ腸活／テレビじゃ言えない／大腸がん急増 日本人の死因 女性1位 男性2位／免疫細胞の7割が腸に／専門医が教える／がんリスク高める食品／予防にプラスの食品／ぽっこりお腹は毒素の塊【健康新常識】
+2025-11-25 10:51:05,229 - __main__ - INFO -   [SKIP] 【子育て世帯がもらえるお金】厳選20制度を紹介／知らないと100万円以上の差／第3子の大学無償化の落とし穴／23区で支援が手厚い穴場／支援制度のチェック方法【PIVOT TALK LIFE】
+2025-11-25 10:51:06,495 - __main__ - INFO -   [SKIP] 【住宅は早いうちに買うが吉？】フラット35融資額引き上げに潜む高市政権のメッセージ／外国人の不動産購入規制は非現実的か／金融政策転換期の価格&流通個数の推移データ【PIVOT TALK MONEY】
+2025-11-25 10:51:07,922 - __main__ - INFO -   [SKIP] 【DIGEST】年収を上げるためには／“市場価値”の真実／転職回数は多くても問題ない理由／一流ヘッドハンターが解説
+2025-11-25 10:51:08,819 - __main__ - INFO -   [SKIP] 【令和の若者の「考察」を考察する】文芸評論家・三宅香帆／「考察」＝「正解」を当てる／正解を求めるのは「報われたい」から／プラットフォームが“正解中毒”を生む／正解の時代を生き抜くサバイバル術
+2025-11-25 10:51:09,798 - __main__ - INFO -   [SKIP] 【自己肯定感って、よくない言葉】「弱さ」を見つめる 2025年の４冊セット／読む量がどっさり増える「テーマ読み」／２人のテーマは「移動」と「ケア」／テーマの深みをつかむと、読む量が一気に増える
+2025-11-25 10:51:10,473 - __main__ - INFO -   [SKIP] 【今の食事と運動習慣が“寝たきり”を作る】バズーカ岡田「“筋トレやってない”に危機感を持て」／ダイエットのイベント化は失敗・リバウンドのもと／老後も歩ける「3つの宅トレ」【Human Insight】
+2025-11-25 10:51:11,631 - __main__ - INFO -   [SKIP] 【消化器外科医が20年で半減する】「金とコネ」がないと手術できなくなる未来／がんにならないための6つの生活習慣・たばこと酒はやめたほうがいい／消化器外科専門医・作家 中山祐次郎【1on1Health】
+2025-11-25 10:51:12,437 - __main__ - INFO -   [SKIP] 【誤解→DXを推進するという目標だけで十分】その理由と失敗事例・成功事例【DX実践講座04】
+2025-11-25 10:51:13,105 - __main__ - INFO -   [SKIP] 【Amazonブラックフライデー】コンピュータサイエンスを学び直すのにオススメの技術書18選 【低レイア、ネットワーク、アルゴリズム編】
+2025-11-25 10:51:14,181 - __main__ - INFO -   [SKIP] 11/21 1億円のBIニュース　食べられるロボットでクマ退治も…。　米国で話題の「Friend」はFriend足り得るか?　超知能&未来社会勉強会第106回(11/21収録)
+2025-11-25 10:51:15,069 - __main__ - INFO -   [SKIP] 【AIバブルの次】量子コンピューター注目企業11社。「NVIDIA・Google・IonQの最新戦略と覇権争いの行方」(Regetti/Arqit/SEALSQ/Amazon/Microsoft)
+2025-11-25 10:51:15,985 - __main__ - INFO -   [SKIP] パスワード付きZIP（PPAP）は無意味？別送メールの危険性とセキュリティ対策をエンジニアが解説
+2025-11-25 10:51:17,520 - __main__ - INFO -   [SKIP] 嘘特撮「○○マン」総集編その２（+α）
+2025-11-25 10:51:18,624 - __main__ - INFO -   [SKIP] BIOTECHNOLOGY in the Future: 2050 (Artificial Biology)
+2025-11-25 10:51:19,382 - __main__ - INFO -   [SKIP] 木原官房長官 定例会見【2025年11月25日午前】
+2025-11-25 10:51:19,382 - __main__ - INFO - Filtered out 20 non-Generative AI videos.
+2025-11-25 10:51:19,382 - __main__ - INFO - Sending 'no updates' notification...
+2025-11-25 10:51:22,813 - src.email_sender - INFO - Email sent successfully to career091101@gmail.com,y_sato@r.recruit.co.jp

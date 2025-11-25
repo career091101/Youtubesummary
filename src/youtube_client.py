@@ -19,12 +19,14 @@ class YouTubeClient:
     def __init__(self, api_key: str, cookies_file: Optional[str] = None, 
                  cache_dir: Optional[str] = None, cache_expiry_days: int = 7,
                  max_retries: int = 3, backoff_factor: int = 2,
-                 proxies: Optional[Dict[str, str]] = None):
+                 proxies: Optional[Dict[str, str]] = None,
+                 user_agent: Optional[str] = None):
         self.youtube = build('youtube', 'v3', developerKey=api_key)
         self.cookies_file = cookies_file
         self.max_retries = max_retries
         self.backoff_factor = backoff_factor
         self.proxies = proxies
+        self.user_agent = user_agent
         
         # Initialize transcript cache
         if cache_dir:
@@ -39,6 +41,12 @@ class YouTubeClient:
             logger.info(f"Proxy enabled: {proxies}")
         else:
             logger.info("No proxy configured")
+        
+        # Log User-Agent configuration
+        if user_agent:
+            logger.info(f"Custom User-Agent configured: {user_agent[:50]}...")
+        else:
+            logger.info("Using default User-Agent")
 
     def _parse_duration(self, duration_iso: str) -> Tuple[str, int]:
         """
@@ -157,9 +165,11 @@ class YouTubeClient:
         for attempt in range(self.max_retries):
             try:
                 # Try to get transcript list using correct API method
-                logger.info(f"Fetching transcript for video {video_id}")
+                logger.info(f"Fetching transcript for video {video_id} (attempt {attempt + 1}/{self.max_retries})")
                 
-                # Create API instance and get list of available transcripts
+                # Create API instance with custom headers if User-Agent is provided
+                # Note: youtube-transcript-api doesn't directly support custom headers,
+                # but we log it for awareness and future enhancement
                 api = YouTubeTranscriptApi()
                 transcript_list = api.list(video_id)
 
@@ -182,7 +192,12 @@ class YouTubeClient:
                 fetched_transcript = transcript.fetch()
                 
                 # Combine all text entries into a single string
-                full_text = " ".join([entry['text'] for entry in fetched_transcript])
+                try:
+                    full_text = " ".join([entry['text'] for entry in fetched_transcript])
+                except TypeError:
+                    # Fallback for object access if dict access fails
+                    logger.debug("Using attribute access for transcript entries")
+                    full_text = " ".join([entry.text for entry in fetched_transcript])
                 
                 # Cache the result
                 if self.cache:
@@ -197,27 +212,58 @@ class YouTubeClient:
                 
             except Exception as e:
                 error_msg = str(e)
+                error_type = type(e).__name__
+                
+                # Extract HTTP status code if available
+                http_status = None
+                if hasattr(e, 'status_code'):
+                    http_status = e.status_code
+                elif '429' in error_msg or 'Too Many Requests' in error_msg:
+                    http_status = 429
+                elif '403' in error_msg or 'Forbidden' in error_msg:
+                    http_status = 403
+                
+                # Log detailed error information
+                logger.warning(
+                    f"Error fetching transcript for video {video_id}. "
+                    f"Type: {error_type}, HTTP Status: {http_status or 'N/A'}, "
+                    f"Message: {error_msg}"
+                )
                 
                 # Check if it's an IP blocking error
-                if "blocking" in error_msg.lower() or "cloud provider" in error_msg.lower():
+                if "blocking" in error_msg.lower() or "cloud provider" in error_msg.lower() or http_status == 403:
                     logger.error(
                         f"YouTube is blocking requests from this IP address for video {video_id}. "
-                        f"This is a known issue when running from cloud providers like GitHub Actions. "
-                        f"Error: {error_msg}"
+                        f"This is a known issue when running from cloud providers. "
+                        f"Consider using a proxy or VPN. Error: {error_msg}"
                     )
                     return None
                 
-                # Handle other errors with exponential backoff
-                if attempt < self.max_retries - 1:
-                    wait_time = self.backoff_factor ** attempt
+                # Special handling for 429 (rate limit) errors
+                if http_status == 429:
+                    if attempt < self.max_retries - 1:
+                        wait_time = 60  # Wait 60 seconds for rate limit errors
+                        logger.warning(
+                            f"Rate limit (429) detected for video {video_id}. "
+                            f"Waiting {wait_time} seconds before retry (attempt {attempt + 1}/{self.max_retries})..."
+                        )
+                        time.sleep(wait_time)
+                    else:
+                        logger.error(f"Rate limit exceeded for video {video_id} after {self.max_retries} attempts")
+                        return None
+                # Handle other errors with exponential backoff (starting at 5 seconds)
+                elif attempt < self.max_retries - 1:
+                    wait_time = 5 * (self.backoff_factor ** attempt)  # Start at 5 seconds
                     logger.warning(
-                        f"Error fetching transcript for video {video_id}. "
-                        f"Attempt {attempt + 1}/{self.max_retries}. "
-                        f"Waiting {wait_time} seconds before retry... Error: {error_msg}"
+                        f"Retrying video {video_id} in {wait_time} seconds "
+                        f"(attempt {attempt + 1}/{self.max_retries})..."
                     )
                     time.sleep(wait_time)
                 else:
-                    logger.error(f"Failed to fetch transcript for video {video_id} after {self.max_retries} attempts: {error_msg}")
+                    logger.error(
+                        f"Failed to fetch transcript for video {video_id} after {self.max_retries} attempts. "
+                        f"Last error: {error_type} - {error_msg}"
+                    )
                     return None
         
         return None

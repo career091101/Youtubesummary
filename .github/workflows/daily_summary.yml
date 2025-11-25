@@ -2,8 +2,17 @@ name: Daily YouTube Summary
 
 on:
   schedule:
-    # Runs at 09:00 UTC (18:00 JST) and 21:00 UTC (06:00 JST)
-    - cron: '0 9,21 * * *'
+    # Runs 5 times daily between 6:00-22:00 JST (21:00, 01:00, 05:00, 09:00, 13:00 UTC)
+    # 06:00 JST (21:00 UTC previous day)
+    # 10:00 JST (01:00 UTC)
+    # 14:00 JST (05:00 UTC)
+    # 18:00 JST (09:00 UTC)
+    # 22:00 JST (13:00 UTC)
+    - cron: '0 21 * * *'  # 06:00 JST
+    - cron: '0 1 * * *'   # 10:00 JST
+    - cron: '0 5 * * *'   # 14:00 JST
+    - cron: '0 9 * * *'   # 18:00 JST
+    - cron: '0 13 * * *'  # 22:00 JST
   workflow_dispatch: # Allows manual triggering
 
 jobs:
