@@ -33,7 +33,8 @@ def create_youtube_style_html_body(videos):
     style_video_info = "padding: 0 4px;"
     style_video_title = "font-size: 18px; font-weight: 600; line-height: 1.4; color: #0f0f0f; margin-bottom: 12px; text-decoration: none; display: block;"
     
-    style_meta_text = "font-size: 12px; color: #606060; margin-bottom: 16px;"
+    style_meta_text = "font-size: 12px; color: #606060; margin-bottom: 8px;"
+    style_url_link = "font-size: 12px; color: #065fd4; text-decoration: none; display: block; margin-bottom: 16px; word-break: break-all;"
     
     # Summary Box
     style_summary_box = "background-color: #f2f2f2; padding: 16px; border-radius: 12px; margin-bottom: 16px; position: relative;"
@@ -152,6 +153,8 @@ def create_youtube_style_html_body(videos):
                         <div class="meta-text" style="{style_meta_text}">
                             {video['channel_title']} • {view_str} • {published_at}
                         </div>
+                        
+                        <a href="{video['url']}" style="{style_url_link}">{video['url']}</a>
 
                         <div class="summary-box" style="{style_summary_box}">
                             <div class="summary-header" style="{style_summary_header}">
