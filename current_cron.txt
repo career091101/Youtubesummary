@@ -1,0 +1,7 @@
+0 6 * * * /Users/y_sato/YOutubeSummary/run_daily_summary.sh
+0 10 * * * /Users/y_sato/YOutubeSummary/run_daily_summary.sh
+0 14 * * * /Users/y_sato/YOutubeSummary/run_daily_summary.sh
+0 18 * * * /Users/y_sato/YOutubeSummary/run_daily_summary.sh
+0 22 * * * /Users/y_sato/YOutubeSummary/run_daily_summary.sh
+41 7 * * * /Users/y_sato/YOutubeSummary/run_daily_summary.sh
+45 7 * * * /Users/y_sato/YOutubeSummary/run_daily_summary.sh

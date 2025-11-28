@@ -120,14 +120,11 @@ def main():
     # Fetch Videos
     videos = fetch_videos(youtube_client, channel_ids)
 
+
     new_videos = [v for v in videos if v['video_id'] not in processed_ids]
     logger.info(f"Filtered out {len(videos) - len(new_videos)} already processed videos.")
 
-    if len(new_videos) > Config.MAX_VIDEOS:
-        logger.info(f"Limiting to {Config.MAX_VIDEOS} new videos to avoid IP blocking")
-        new_videos = new_videos[:Config.MAX_VIDEOS]
-    
-    # Filter for Generative AI content
+    # Filter for Generative AI content FIRST
     gen_ai_videos = []
     for v in new_videos:
         if is_gen_ai_content(v, summarizer):
@@ -137,6 +134,11 @@ def main():
             logger.info(f"  [SKIP] {v['title']}")
 
     logger.info(f"Filtered out {len(new_videos) - len(gen_ai_videos)} non-Generative AI videos.")
+    
+    # THEN apply MAX_VIDEOS limit to AI videos
+    if len(gen_ai_videos) > Config.MAX_VIDEOS:
+        logger.info(f"Limiting to {Config.MAX_VIDEOS} AI videos to avoid IP blocking")
+        gen_ai_videos = gen_ai_videos[:Config.MAX_VIDEOS]
 
     if not gen_ai_videos:
         # Only send notification if we actually filtered out videos that were otherwise new

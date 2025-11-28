@@ -170,7 +170,24 @@ class YouTubeClient:
                 # Create API instance with custom headers if User-Agent is provided
                 # Note: youtube-transcript-api doesn't directly support custom headers,
                 # but we log it for awareness and future enhancement
-                api = YouTubeTranscriptApi()
+                
+                # Prepare HTTP client with cookies if available
+                http_client = None
+                if self.cookies_file and os.path.exists(self.cookies_file):
+                    try:
+                        import requests
+                        from http.cookiejar import MozillaCookieJar
+                        
+                        http_client = requests.Session()
+                        http_client.cookies = MozillaCookieJar(self.cookies_file)
+                        http_client.cookies.load(ignore_discard=True, ignore_expires=True)
+                        logger.debug(f"Loaded cookies from {self.cookies_file}")
+                    except Exception as e:
+                        logger.warning(f"Failed to load cookies: {e}")
+                        http_client = None
+
+                api = YouTubeTranscriptApi(http_client=http_client)
+                
                 transcript_list = api.list(video_id)
 
                 
