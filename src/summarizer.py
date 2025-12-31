@@ -49,7 +49,23 @@ class Summarizer:
             response = self.client.chat.completions.create(
                 model="gpt-5.1", # Updated to GPT-5.1
                 messages=[
-                    {"role": "system", "content": "You are a classifier. Determine if the following video is related to Generative AI (LLM, Image Generation, AI Agents, etc.). Respond with 'YES' or 'NO'."},
+                    {"role": "system", "content": """You are a strict technology content classifier.
+Determine if the following video is related to the specific target topics below. Respond with 'YES' or 'NO'.
+
+TARGET TOPICS (YES):
+- Generative AI (LLM, Image Generation, AI Agents, etc.)
+- Machine Learning / Deep Learning
+- Robotics (Hardware, Software, Humanoids, etc.)
+- Autonomous Driving / Self-driving technology
+- Quantum Computing
+- Semiconductors / AI Chips (NVIDIA, GPU, TPU, manufacturing, etc.)
+
+EXCLUSION CRITERIA (NO):
+- General consumer electronics reviews (Smartphones, PCs, Cameras) unless heavily focused on AI/Chips.
+- General programming/web dev tutorials (HTML, CSS, basic Python) unless AI/ML related.
+- General business/economy/politics unless focused on the target tech sectors.
+- Entertainment/Gaming.
+"""},
                     {"role": "user", "content": content}
                 ],
                 max_completion_tokens=50, # Increased to avoid token limit error

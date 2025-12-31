@@ -1,7 +1,8 @@
 #!/bin/bash
 
 # Absolute path to the project directory
-PROJECT_DIR="/Users/y_sato/Downloads/YOutubeSummary"
+# Absolute path to the project directory
+PROJECT_DIR="/Users/y_sato/YOutubeSummary"
 SCRIPT_PATH="$PROJECT_DIR/run_daily_summary.sh"
 
 # Ensure the script is executable
@@ -14,14 +15,10 @@ crontab -l > mycron.backup 2>/dev/null
 grep -v "$SCRIPT_PATH" mycron.backup > mycron.new
 
 # Add new jobs
-# 06:00 JST
+# 6:00 JST
 echo "0 6 * * * $SCRIPT_PATH" >> mycron.new
-# 10:00 JST
-echo "0 10 * * * $SCRIPT_PATH" >> mycron.new
 # 14:00 JST
 echo "0 14 * * * $SCRIPT_PATH" >> mycron.new
-# 18:00 JST
-echo "0 18 * * * $SCRIPT_PATH" >> mycron.new
 # 22:00 JST
 echo "0 22 * * * $SCRIPT_PATH" >> mycron.new
 

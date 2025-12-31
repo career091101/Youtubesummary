@@ -4,28 +4,61 @@ from datetime import datetime, timedelta, timezone
 from typing import List, Dict, Optional, Tuple, Any
 from googleapiclient.discovery import build
 from youtube_transcript_api import YouTubeTranscriptApi, TranscriptsDisabled, NoTranscriptFound
+from youtube_transcript_api.proxies import ProxyConfig
 from .logger import setup_logger
 from .transcript_cache import TranscriptCache
+from .exceptions import IPBlockingError, RateLimitError, TranscriptError
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from .proxy_manager import ProxyManager
+
+
+class RotatingProxyConfig(ProxyConfig):
+    """
+    Custom ProxyConfig implementation for rotating proxies.
+    This integrates with our ProxyManager to provide proper proxy rotation.
+    """
+    
+    def __init__(self, proxy_dict: Dict[str, str], retries: int = 3):
+        """
+        Initialize with a proxy dictionary from ProxyManager.
+        
+        Args:
+            proxy_dict: Proxy configuration dict with 'http' and 'https' keys
+            retries: Number of retries when blocked
+        """
+        self._proxy_dict = proxy_dict
+        self._retries = retries
+    
+    def to_requests_dict(self) -> Dict[str, str]:
+        """Return the proxy dict for requests library."""
+        return self._proxy_dict
+    
+    @property
+    def prevent_keeping_connections_alive(self) -> bool:
+        """Prevent keeping connections alive for proper rotation."""
+        return True
+    
+    @property
+    def retries_when_blocked(self) -> int:
+        """Number of retries when blocked."""
+        return self._retries
 
 logger = setup_logger(__name__)
-
-# Debug logging for youtube_transcript_api
-import youtube_transcript_api
-logger.info(f"Loaded youtube_transcript_api from: {youtube_transcript_api.__file__}")
-logger.info(f"YouTubeTranscriptApi attributes: {dir(YouTubeTranscriptApi)}")
 
 
 class YouTubeClient:
     def __init__(self, api_key: str, cookies_file: Optional[str] = None, 
                  cache_dir: Optional[str] = None, cache_expiry_days: int = 7,
                  max_retries: int = 3, backoff_factor: int = 2,
-                 proxies: Optional[Dict[str, str]] = None,
+                 proxy_manager: Optional['ProxyManager'] = None,
                  user_agent: Optional[str] = None):
         self.youtube = build('youtube', 'v3', developerKey=api_key)
         self.cookies_file = cookies_file
         self.max_retries = max_retries
         self.backoff_factor = backoff_factor
-        self.proxies = proxies
+        self.proxy_manager = proxy_manager
         self.user_agent = user_agent
         
         # Initialize transcript cache
@@ -37,10 +70,10 @@ class YouTubeClient:
             logger.info("Transcript cache disabled")
         
         # Log proxy configuration
-        if proxies:
-            logger.info(f"Proxy enabled: {proxies}")
+        if proxy_manager and proxy_manager.has_proxies():
+            logger.info(f"Proxy rotation enabled with {len(proxy_manager.proxies)} proxies")
         else:
-            logger.info("No proxy configured")
+            logger.info("No proxy rotation configured")
         
         # Log User-Agent configuration
         if user_agent:
@@ -73,11 +106,13 @@ class YouTubeClient:
 
     def get_videos_from_channels(self, channel_ids: List[str]) -> List[Dict[str, Any]]:
         """
-        Fetches videos uploaded in the last 3 days from the specified channels.
+        Fetches videos uploaded in the last N days from the specified channels.
         """
+        from .config import Config
+        
         videos = []
-        # 3 days ago in RFC 3339 format
-        published_after = (datetime.now(timezone.utc) - timedelta(days=3)).isoformat()
+        # N days ago in RFC 3339 format
+        published_after = (datetime.now(timezone.utc) - timedelta(days=Config.DAYS_TO_FETCH)).isoformat()
 
         for channel_id in channel_ids:
             try:
@@ -119,8 +154,8 @@ class YouTubeClient:
                         details = video_details['items'][0]
                         duration, duration_seconds = self._parse_duration(details['contentDetails']['duration'])
                         
-                        # 5分以内の動画を除外
-                        if duration_seconds <= 300:
+                        # 短い動画を除外
+                        if duration_seconds <= Config.MIN_VIDEO_DURATION_SECONDS:
                             logger.info(f"Skipping short video (duration: {duration}): {snippet['title']}")
                             continue
                         
@@ -167,9 +202,16 @@ class YouTubeClient:
                 # Try to get transcript list using correct API method
                 logger.info(f"Fetching transcript for video {video_id} (attempt {attempt + 1}/{self.max_retries})")
                 
-                # Create API instance with custom headers if User-Agent is provided
-                # Note: youtube-transcript-api doesn't directly support custom headers,
-                # but we log it for awareness and future enhancement
+                # Get proxy from rotation if available
+                current_proxy = None
+                proxy_config = None
+                
+                if self.proxy_manager and self.proxy_manager.has_proxies():
+                    current_proxy = self.proxy_manager.get_next_proxy()
+                    if current_proxy:
+                        # Create ProxyConfig for properly rotating proxies
+                        proxy_config = RotatingProxyConfig(current_proxy, retries=0)
+                        logger.debug(f"Using rotating proxy for video {video_id}")
                 
                 # Prepare HTTP client with cookies if available
                 http_client = None
@@ -177,7 +219,6 @@ class YouTubeClient:
                     try:
                         import requests
                         from http.cookiejar import MozillaCookieJar
-                        
                         http_client = requests.Session()
                         http_client.cookies = MozillaCookieJar(self.cookies_file)
                         http_client.cookies.load(ignore_discard=True, ignore_expires=True)
@@ -186,7 +227,11 @@ class YouTubeClient:
                         logger.warning(f"Failed to load cookies: {e}")
                         http_client = None
 
-                api = YouTubeTranscriptApi(http_client=http_client)
+                # Initialize API with proxy config
+                api = YouTubeTranscriptApi(
+                    proxy_config=proxy_config,
+                    http_client=http_client
+                )
                 
                 transcript_list = api.list(video_id)
 
@@ -219,6 +264,10 @@ class YouTubeClient:
                 # Cache the result
                 if self.cache:
                     self.cache.set(video_id, full_text)
+                
+                # Mark proxy as successful
+                if self.proxy_manager and current_proxy:
+                    self.proxy_manager.mark_proxy_success(current_proxy)
                 
                 logger.info(f"Successfully fetched transcript for video {video_id} ({len(full_text)} chars)")
                 return full_text
@@ -254,10 +303,21 @@ class YouTubeClient:
                         f"This is a known issue when running from cloud providers. "
                         f"Consider using a proxy or VPN. Error: {error_msg}"
                     )
+                    # Mark proxy as failed
+                    if self.proxy_manager and current_proxy:
+                        self.proxy_manager.mark_proxy_failed(current_proxy)
+                    # IP制限エラーはこのプロキシでは無駄なので次のプロキシで再試行
+                    if self.proxy_manager and self.proxy_manager.has_proxies() and attempt < self.max_retries - 1:
+                        logger.info("Trying next proxy...")
+                        continue
                     return None
                 
                 # Special handling for 429 (rate limit) errors
                 if http_status == 429:
+                    # Mark proxy as failed for rate limiting
+                    if self.proxy_manager and current_proxy:
+                        self.proxy_manager.mark_proxy_failed(current_proxy)
+                    
                     if attempt < self.max_retries - 1:
                         wait_time = 60  # Wait 60 seconds for rate limit errors
                         logger.warning(

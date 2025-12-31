@@ -1,0 +1,19 @@
+YouTube Proxy Verification Results - 2025-12-31 11:02:01
+Target Video: jNQXAC9IVRw
+======================================================================
+
+WORKING PROXIES (Safe to use):
+----------------------------------------------------------------------
+
+FAILED PROXIES (Blocked or Error):
+----------------------------------------------------------------------
+64.137.96.74:6641 | Error: type object 'YouTubeTranscriptApi' has no attribute 'get_transcript'
+23.27.208.120:5830 | Error: type object 'YouTubeTranscriptApi' has no attribute 'get_transcript'
+216.10.27.159:6837 | Error: type object 'YouTubeTranscriptApi' has no attribute 'get_transcript'
+198.23.239.134:6540 | Error: type object 'YouTubeTranscriptApi' has no attribute 'get_transcript'
+198.105.121.200:6462 | Error: type object 'YouTubeTranscriptApi' has no attribute 'get_transcript'
+142.111.48.253:7030 | Error: type object 'YouTubeTranscriptApi' has no attribute 'get_transcript'
+107.172.163.27:6543 | Error: type object 'YouTubeTranscriptApi' has no attribute 'get_transcript'
+23.95.150.145:6114 | Error: type object 'YouTubeTranscriptApi' has no attribute 'get_transcript'
+23.26.71.145:5628 | Error: type object 'YouTubeTranscriptApi' has no attribute 'get_transcript'
+84.247.60.125:6095 | Error: type object 'YouTubeTranscriptApi' has no attribute 'get_transcript'

@@ -1,1 +1,2 @@
-0 6,18 * * * /Users/y_sato/Downloads/YOutubeSummary/run_daily_summary.sh
+0 10 * * * /Users/y_sato/YOutubeSummary/run_daily_summary.sh
+0 22 * * * /Users/y_sato/YOutubeSummary/run_daily_summary.sh
